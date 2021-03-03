@@ -49,8 +49,6 @@ public final class DiscordJoinLeaveListener extends ListenerAdapter {
                 .deleteOne(new Document("name", name));
     }
 
-    private final long fourteenDays = TimeUnit.DAYS.toMillis(14);
-
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
       /*  OffsetDateTime timeCreated = OffsetDateTime.now();

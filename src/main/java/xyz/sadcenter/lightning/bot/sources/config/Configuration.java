@@ -16,10 +16,10 @@ public final class Configuration {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
         if (!file.exists()) {
             this.configurationStorage = new ConfigurationStorage();
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-            gson.toJson(configurationStorage, writer);
-            writer.flush();
-            writer.close();
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                gson.toJson(configurationStorage, writer);
+                writer.flush();
+            }
         } else {
             try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
                 this.configurationStorage = gson.fromJson(bufferedReader, ConfigurationStorage.class);
