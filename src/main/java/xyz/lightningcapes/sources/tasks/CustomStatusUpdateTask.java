@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public final class CustomStatusUpdateTask extends AbstractScheduledService {
 
     private final List<String> activities = Arrays.asList(
-            "by sadcenter",
+            "by sadcenter & warsztat",
             "Czy wiesz, że nie pisze się lighting tylko lightning?",
             "Nie widzisz kanałów? Zajmij nick *duży mózg*",
             "LOVE FLOPPA",
