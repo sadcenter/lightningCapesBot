@@ -12,7 +12,7 @@ public class EmbedUtil {
                 .setTitle(title)
                 .setDescription(desc)
                 .setTimestamp(new Date().toInstant())
-                .setFooter("made by sadcenter");
+                .setFooter("made by sadcenter & warsztat");
         if (nick != null) embedBuilder.setThumbnail("https://mc-heads.net/head/" + nick);
 
         return embedBuilder.build();
@@ -23,7 +23,7 @@ public class EmbedUtil {
                 .setTitle(title)
                 .setDescription(desc)
                 .setTimestamp(new Date().toInstant())
-                .setFooter("made by sadcenter");
+                .setFooter("made by sadcenter & warsztat");
         if (URL != null) embedBuilder.setThumbnail(URL);
 
         return embedBuilder.build();

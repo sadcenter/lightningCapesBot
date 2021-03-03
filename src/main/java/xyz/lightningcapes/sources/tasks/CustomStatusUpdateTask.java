@@ -21,9 +21,10 @@ public final class CustomStatusUpdateTask extends AbstractScheduledService {
             "Ranga donator dostępna jest od 1zł i ma dostęp do wszystkich dodatków",
             "A wiedziałeś, że mamy około 70 dodatków i około 200 pelerynek?",
             "Booster, YouTuber, Streamer, Lider Gildi oraz partner serwera discord ma dostęp do premium",
-            "Premium jest za 5 zaproszeń! * b o g a c t w o *"
+            "Premium jest za 5 zaproszeń! * b o g a c t w o *",
+            "FLOPPA JEST SUPER"
     );
-    // private final Random random = new Random();
+
     private int index = 0;
 
     @Override
@@ -31,8 +32,7 @@ public final class CustomStatusUpdateTask extends AbstractScheduledService {
         if (index >= this.activities.size()) {
             index = 0;
         }
-        String activities = this.activities.get(index);
-        Bootstrap.getInstance().getApi().getPresence().setActivity(Activity.playing(activities));
+        Bootstrap.getInstance().getApi().getPresence().setActivity(Activity.playing(activities.get(index)));
         index++;
     }
 
