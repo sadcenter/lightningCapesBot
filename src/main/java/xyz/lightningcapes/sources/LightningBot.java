@@ -15,6 +15,8 @@ import xyz.lightningcapes.sources.commands.TakeCommand;
 import xyz.lightningcapes.sources.commands.admin.AdminUnRegisterCommand;
 import xyz.lightningcapes.sources.commands.cape.CapeCommand;
 import xyz.lightningcapes.sources.commands.custom.CustomCapeCommand;
+import xyz.lightningcapes.sources.commands.custom.CustomItemCommand;
+import xyz.lightningcapes.sources.commands.custom.CustomWingsCommand;
 import xyz.lightningcapes.sources.commands.hats.FreeHatCommand;
 import xyz.lightningcapes.sources.commands.hats.PaidHatCommand;
 import xyz.lightningcapes.sources.commands.item.FreeItemCommand;
@@ -58,7 +60,8 @@ public final class LightningBot {
                 new DeleteAddonCommand(configuration.channelId),
                 new AdminUnRegisterCommand(configuration.channelId),
                 new PaidItemCommand(configuration.channelId),
-                new CustomCapeCommand("customwings", configuration.channelId, mongoDatabase.getCollection("wings")),
+                new CustomWingsCommand(configuration.channelId, mongoDatabase.getCollection("wings")),
+                new CustomItemCommand(configuration.channelId, mongoDatabase.getCollection("wings")),
                 new CustomCapeCommand("customcape", configuration.channelId, mongoDatabase.getCollection("capes")),
                 new CapeCommand(configuration.channelId));
         this.api = JDABuilder.createDefault(configuration.discordToken)
