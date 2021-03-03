@@ -1,7 +1,6 @@
 package xyz.lightningcapes.sources.listeners;
 
 import com.mongodb.client.MongoDatabase;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -13,9 +12,8 @@ public final class DiscordJoinLeaveListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberRemove(@NotNull GuildMemberRemoveEvent event) {
-        System.out.println("cos");
-        Member member = event.getMember();
-        String name = Bootstrap.getInstance().getInGameNamesManager().getName(member.getIdLong());
+        long id = event.getUser().getIdLong();
+        String name = Bootstrap.getInstance().getInGameNamesManager().getName(id);
         if (name == null)
             return;
 
@@ -23,7 +21,7 @@ public final class DiscordJoinLeaveListener extends ListenerAdapter {
 
         mongoDatabase
                 .getCollection("inGameNicks")
-                .deleteOne(new Document("id", member.getIdLong()));
+                .deleteOne(new Document("id", id));
 
         mongoDatabase
                 .getCollection("wings")
