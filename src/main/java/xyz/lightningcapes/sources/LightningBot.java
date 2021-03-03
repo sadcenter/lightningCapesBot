@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import xyz.lightningcapes.api.handler.CommandHandler;
 import xyz.lightningcapes.sources.commands.DeleteAddonCommand;
 import xyz.lightningcapes.sources.commands.KitCommand;
@@ -47,7 +48,6 @@ public final class LightningBot {
     @SneakyThrows
     public LightningBot() {
         this.configuration = new Configuration().getConfigurationStorage();
-        System.out.println(configuration.mongoString);
         this.mongoDatabase = MongoClients.create(configuration.mongoString).getDatabase(configuration.mongoDatabase);
         commandManager = new CommandManager(new TakeCommand(configuration.takeID),
                 new FreeWingsCommand(configuration.channelId),
@@ -64,15 +64,11 @@ public final class LightningBot {
                 new CustomItemCommand(configuration.channelId, mongoDatabase.getCollection("wings")),
                 new CustomCapeCommand("customcape", configuration.channelId, mongoDatabase.getCollection("capes")),
                 new CapeCommand(configuration.channelId));
-        this.api = JDABuilder.createDefault(configuration.discordToken)
-                .enableIntents(GatewayIntent.GUILD_MEMBERS)
-                .addEventListeners(new DiscordJoinLeaveListener())
-                .addEventListeners(new CommandHandler())
+        this.api = JDABuilder.create(configuration.discordToken, GatewayIntent.GUILD_MEMBERS)
+                .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS)
+                .addEventListeners(new DiscordJoinLeaveListener(), new CommandHandler())
                 .build();
-
         this.inGameNamesManager = new InGameNamesManager(mongoDatabase.getCollection("inGameNicks"));
-
-        //System.out.println(api.getInviteUrl(Permission.values()));
         start();
 
     }
