@@ -39,12 +39,9 @@ public final class LightningBot {
 
     public static final char PREFIX = '!';
 
-    //"ODAyOTAyNjgzOTQ1NDAyNDAw.YA1_ZQ.1cCt0-JzYk-VyVqum4t0zlrngmk";
-
     private final MongoDatabase mongoDatabase;
     private final JDA api;
 
-    //managers
     private final InGameNamesManager inGameNamesManager;
 
     private final ConfigurationStorage configuration;
