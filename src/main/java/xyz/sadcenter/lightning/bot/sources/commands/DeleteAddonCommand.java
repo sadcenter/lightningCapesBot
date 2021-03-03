@@ -1,0 +1,54 @@
+package xyz.sadcenter.lightning.bot.sources.commands;
+
+import com.mongodb.client.MongoDatabase;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
+import org.bson.Document;
+import xyz.sadcenter.lightning.bot.Boostrap;
+import xyz.sadcenter.lightning.bot.api.Command;
+import xyz.sadcenter.lightning.bot.sources.utils.EmbedUtil;
+
+import java.util.concurrent.TimeUnit;
+
+public final class DeleteAddonCommand extends Command {
+
+    public DeleteAddonCommand(long channelId) {
+        super(channelId);
+    }
+
+    @Override
+    public void handle(Member user, Message message, TextChannel textChannel, String... args) {
+        message.delete().queue();
+        if(args.length == 0) {
+            return;
+        }
+
+        MongoDatabase mongoDatabase = Boostrap.getInstance().getMongoDatabase();
+
+        String name = Boostrap.getInstance().getInGameNamesManager().getName(user.getIdLong());
+        String addonType = args[0];
+        if(addonType.equalsIgnoreCase("cape")) {
+            mongoDatabase.getCollection("capes").replaceOne(new Document("name", name), new Document("name", name).append("cape", "null"));
+            textChannel.sendMessage(EmbedUtil.getEmbed("Usunieto twoja pelerynke!", "Twoja pelerynka zostala usunieta", name))
+                    .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();;
+        } else if(addonType.equalsIgnoreCase("wings")) {
+            mongoDatabase.getCollection("wings").replaceOne(new Document("name", name), new Document("name", name).append("wings", "null"));
+            textChannel.sendMessage(EmbedUtil.getEmbed("Usunieto twoje skrzydla!", "Twoje skrzydla zostaly usuniete", name))
+                    .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();;
+        } else if(addonType.equalsIgnoreCase("item")) {
+            mongoDatabase.getCollection("items").replaceOne(new Document("name", name), new Document("name", name).append("item", "null"));
+            textChannel.sendMessage(EmbedUtil.getEmbed("Usunieto twoj itemek!", "Twoj itemek zostal usuniety", name))
+                    .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();;
+        } else if(addonType.equalsIgnoreCase("skin")) {
+            mongoDatabase.getCollection("skins").replaceOne(new Document("name", name), new Document("name", name).append("skin", "null"));
+            textChannel.sendMessage(EmbedUtil.getEmbed("Usunieto twoj itemek!", "Twoj itemek zostal usuniety", name))
+                    .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();;
+        } else {
+            textChannel.sendMessage(EmbedUtil.getEmbed("Poprawne uzycie: cape/wings/item!", ":thinking:", name))
+                    .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();;
+        }
+
+
+    }
+}

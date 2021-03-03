@@ -1,0 +1,14 @@
+{
+  "discordToken": "ODE1MzE5ODgwNTY3MDk1MzY4.YDqrzw.haxCMz48DBX6eEbnoermFIaurwE",
+  "mongoString": "mongodb://135.125.183.236:27017/?readPreference=primary&ssl=false",
+  "mongoDatabase": "lighting",
+  "takeID": 815691886408368128,
+  "channelId": 815691886408368128,
+  "premiumId": 815861122279538720,
+  "unregisteredId": 815687865362808842,
+  "registeredId": 815689908525727786,
+  "adminCommandsChannel": 0,
+  "notWriteChannels": [
+    5
+  ]
+}
