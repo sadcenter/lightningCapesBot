@@ -61,7 +61,7 @@ public final class LightningBot {
                 new AdminUnRegisterCommand(configuration.channelId),
                 new PaidItemCommand(configuration.channelId),
                 new CustomWingsCommand(configuration.channelId, mongoDatabase.getCollection("wings")),
-                new CustomItemCommand(configuration.channelId, mongoDatabase.getCollection("wings")),
+                new CustomItemCommand(configuration.channelId, mongoDatabase.getCollection("items")),
                 new CustomCapeCommand("customcape", configuration.channelId, mongoDatabase.getCollection("capes")),
                 new CapeCommand(configuration.channelId));
         this.api = JDABuilder.create(configuration.discordToken, GatewayIntent.GUILD_MEMBERS)
