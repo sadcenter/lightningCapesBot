@@ -7,7 +7,7 @@ import java.util.Set;
 
 public final class ConfigurationStorage implements Serializable {
 
-    public String discordToken = "ODE1MzE5ODgwNTY3MDk1MzY4.YDqrzw.haxCMz48DBX6eEbnoermFIaurwE";
+    public String discordToken = "ODE1MzE5ODgwNTY3MDk1MzY4.YDqrzw.haxdxdxCMz48DBX6eEbnoermFIaurwE";
 
     public String mongoString = "mongodb://135.125.183.236:27017/?readPreference=primary&ssl=false";
 
