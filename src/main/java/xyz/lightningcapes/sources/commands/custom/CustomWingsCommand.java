@@ -39,9 +39,10 @@ public final class CustomWingsCommand extends Command {
             return;
         }
 
-        if (args.length == 0) {
-            textChannel.sendMessage(EmbedUtil.getEmbed("Wyslij argument, nie pusta komende!",
-                    "Musisz wyslac nam skrzydla ktore chcesz :thinking:", null))
+        if (message.getAttachments().isEmpty()) {
+            textChannel.sendMessage(EmbedUtil.getEmbed("Musisz zalaczyc obraz!",
+                    "Zalacz obraz :thinking:",
+                    name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
             message.delete().queue();
             return;

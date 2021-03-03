@@ -64,7 +64,7 @@ public final class LightningBot {
                 new CustomItemCommand(configuration.channelId, mongoDatabase.getCollection("items")),
                 new CustomCapeCommand("customcape", configuration.channelId, mongoDatabase.getCollection("capes")),
                 new CapeCommand(configuration.channelId));
-        this.api = JDABuilder.create(configuration.discordToken, GatewayIntent.GUILD_MEMBERS)
+        this.api = JDABuilder.create(configuration.discordToken, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES)
                 .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS)
                 .addEventListeners(new DiscordJoinLeaveListener(), new CommandHandler())
                 .build();

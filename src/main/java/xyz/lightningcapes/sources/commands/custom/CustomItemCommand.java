@@ -52,7 +52,6 @@ public final class CustomItemCommand extends Command {
             message.delete().queue();
             return;
         }
-
         //  String raw = args[0];
         //String[] split = raw.split("/");
         //String pathName = dir + split[split.length - 1];

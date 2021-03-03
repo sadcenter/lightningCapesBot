@@ -27,10 +27,8 @@ public class CommandHandler extends ListenerAdapter {
                 if (Bootstrap.getInstance().getConfiguration().notWriteChannels.contains(event.getChannel().getIdLong())) {
                     message.delete().queue();
                 }
-                System.out.println("komende "+substring+" nie istnieje");
                 return;
             }
-            System.out.println("komende "+substring+" istnieje");
 
             if (!event.getChannel().getId().equals(String.valueOf(command.getChannelId())))
                 return;
