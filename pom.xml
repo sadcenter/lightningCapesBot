@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>xyz.lightningcapes</groupId>
     <artifactId>lightningCapesBot</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -75,24 +75,18 @@
             <artifactId>commons-io</artifactId>
             <version>2.8.0</version>
         </dependency>
-
-
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
-            <version>4.2.0-beta1</version>
+            <version>4.2.1</version>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.11</version>
+            <version>3.12.0</version>
         </dependency>
-
-
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -110,7 +104,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -118,7 +111,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>xyz.sadcenter.lightning.bot.Boostrap</mainClass>
+                            <mainClass>xyz.lightningcapes.Bootstrap</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -131,9 +124,6 @@
                     <target>11</target>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
-
-
 </project>
