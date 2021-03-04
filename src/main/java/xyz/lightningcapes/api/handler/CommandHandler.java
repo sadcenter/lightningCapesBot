@@ -22,7 +22,7 @@ public class CommandHandler extends ListenerAdapter {
         String content = message.getContentRaw();
         TextChannel channel = event.getChannel();
         long channelId = channel.getIdLong();
-        if (content.charAt(0) == LightningBot.PREFIX) {
+        if (content.length() != 0 && content.charAt(0) == LightningBot.PREFIX) {
             String[] raw = content.split(" ");
             if (raw.length == 0) {
                 return;
