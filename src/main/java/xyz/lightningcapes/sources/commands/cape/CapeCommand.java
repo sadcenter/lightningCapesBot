@@ -37,6 +37,7 @@ public final class CapeCommand extends Command {
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
             return;
         }
+        System.out.println(name);
         Document nameDocument = new Document("name", name);
         System.out.println("Replacing document!");
         System.out.println(Bootstrap.getInstance().getMongoDatabase().getCollection("capes")

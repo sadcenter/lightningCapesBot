@@ -12,16 +12,13 @@ import java.util.concurrent.TimeUnit;
 public final class InGameNamesManager {
 
     private final MongoCollection<Document> collection;
-    private final LoadingCache<Long, String> inGameCache = Caffeine.newBuilder().expireAfterWrite(3, TimeUnit.MINUTES).build(new CacheLoader<Long, String>() {
+    private final LoadingCache<Long, String> inGameCache = Caffeine.newBuilder().expireAfterWrite(3, TimeUnit.MINUTES).build(new CacheLoader<>() {
         @Override
-        public @Nullable String load(Long id) throws Exception {
+        public @Nullable String load(Long id) {
             Document document = collection.find(new Document("id", id)).first();
-
             if (document == null)
                 return null;
-
             return document.getString("name");
-
         }
     });
 
