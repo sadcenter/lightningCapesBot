@@ -37,7 +37,7 @@ public final class InGameNamesManager {
 
     public void register(long id, String nick) {
         this.collection.insertOne(new Document("id", id).append("name", nick));
-        this.inGameCache.put(id, nick);
+        this.inGameCache.asMap().put(id, nick);
     }
 
     public LoadingCache<Long, String> getRaw() {
