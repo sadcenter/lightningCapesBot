@@ -17,17 +17,4 @@ public class EmbedUtil {
 
         return embedBuilder.build();
     }
-
-    public static MessageEmbed getEmbedWithURL(String title, String desc, String URL) {
-        EmbedBuilder embedBuilder = new EmbedBuilder()
-                .setTitle(title)
-                .setDescription(desc)
-                .setTimestamp(new Date().toInstant())
-                .setFooter("made by sadcenter & warsztat");
-        if (URL != null) embedBuilder.setThumbnail(URL);
-
-        return embedBuilder.build();
-    }
-
-
 }

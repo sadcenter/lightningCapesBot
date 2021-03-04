@@ -31,7 +31,7 @@ public final class TakeCommand extends Command {
 
         String name = args[0];
         if (name.length() > 16 || name.length() <= 2 || !RegisterUtil.isAlphanumeric(name)) {
-            textChannel.sendMessage(EmbedUtil.getEmbed("Podales za dlugi, za krotki lub alfanumeryczny nick!",
+            textChannel.sendMessage(EmbedUtil.getEmbed("Podales za dlugi, za krotki lub nie alfanumeryczny nick!",
                     "Nie da sie miec takiego nicku w minecrafcie :frowning:", null))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
             return;

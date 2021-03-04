@@ -23,30 +23,26 @@ public final class CapeCommand extends Command {
     @Override
     public void handle(Member user, Message message, TextChannel textChannel, String... args) {
         message.delete().queue();
-
         if (args.length == 0) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Wyslij nick, nie pusta komende!",
                     "Musisz nam wyslac id itemu ktory chcesz :thinking:", null))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
             return;
         }
-
-        String cape = args[0];
-
         String name = Bootstrap.getInstance().getInGameNamesManager().getName(user.getIdLong());
-        File found = ReaderUtils.found(tierDirs, cape + ".png");
+        File found = ReaderUtils.found(tierDirs, args[0] + ".png");
         if (found == null) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Taka pelerynka nie istnieje!",
                     "Takie id nie istnieje :thinking:", name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
             return;
         }
-
         Bootstrap.getInstance().getMongoDatabase().getCollection("capes")
                 .replaceOne(new Document("name", name), new Document("name", name).append("cape", "/allcapes/" + found.getName()));
         textChannel.sendMessage(EmbedUtil.getEmbed("Nadano pelerynke!",
-                "Aby zobaczyc nowa pelerynke zrestartuj mc :exploding_head:", name))
-                .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
-
+                "Aby zobaczyć nową pelerynkę zrestartuj mc :exploding_head:", name))
+                .delay(5, TimeUnit.SECONDS)
+                .flatMap(Message::delete)
+                .queue();
     }
 }
