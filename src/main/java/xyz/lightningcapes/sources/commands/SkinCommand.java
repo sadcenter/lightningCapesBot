@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 public final class SkinCommand extends Command {
 
+    //INTELKA TY KURWO PRZESTAN MI TU ZLE PODPOWIADAC
     private final String dir = "downloaded/skins/";
     private final MongoCollection<Document> collection;
 

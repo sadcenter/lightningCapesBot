@@ -17,6 +17,7 @@ public final class PaidItemCommand extends Command {
 
     private final String stringPath = "/paid/items/";
     private final File path = new File(System.getProperty("user.dir") + stringPath);
+
     public PaidItemCommand(long id) {
         super("pitem", id);
     }

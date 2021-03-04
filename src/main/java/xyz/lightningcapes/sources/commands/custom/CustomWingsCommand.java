@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 public final class CustomWingsCommand extends Command {
 
-    private final String dir = "/downloaded/wings/";
+    private final String dir = "downloaded/wings/";
     private final MongoCollection<Document> collection;
 
     public CustomWingsCommand(long id, MongoCollection<Document> collection) {

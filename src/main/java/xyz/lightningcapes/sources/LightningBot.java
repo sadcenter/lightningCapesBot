@@ -16,7 +16,6 @@ import xyz.lightningcapes.sources.commands.TakeCommand;
 import xyz.lightningcapes.sources.commands.admin.AdminUnRegisterCommand;
 import xyz.lightningcapes.sources.commands.cape.CapeCommand;
 import xyz.lightningcapes.sources.commands.custom.CustomCapeCommand;
-import xyz.lightningcapes.sources.commands.custom.CustomItemCommand;
 import xyz.lightningcapes.sources.commands.custom.CustomWingsCommand;
 import xyz.lightningcapes.sources.commands.hats.FreeHatCommand;
 import xyz.lightningcapes.sources.commands.hats.PaidHatCommand;
@@ -36,13 +35,11 @@ public final class LightningBot {
 
     public static final char PREFIX = '!';
 
-    private final MongoDatabase mongoDatabase;
     private final JDA api;
 
+    private final MongoDatabase mongoDatabase;
     private final InGameNamesManager inGameNamesManager;
-
     private final ConfigurationStorage configuration;
-
     private final CommandManager commandManager;
 
     @SneakyThrows
@@ -58,17 +55,17 @@ public final class LightningBot {
                 new FreeItemCommand(configuration.channelId),
                 new KitCommand(configuration.channelId),
                 new DeleteAddonCommand(configuration.channelId),
-                new AdminUnRegisterCommand(configuration.channelId),
+                new AdminUnRegisterCommand(configuration.adminCommandsChannel),
                 new PaidItemCommand(configuration.channelId),
                 new CustomWingsCommand(configuration.channelId, mongoDatabase.getCollection("wings")),
-                new CustomItemCommand(configuration.channelId, mongoDatabase.getCollection("items")),
+                // new CustomItemCommand(configuration.channelId, mongoDatabase.getCollection("items")),
                 new CustomCapeCommand("customcape", configuration.channelId, mongoDatabase.getCollection("capes")),
                 new CapeCommand(configuration.channelId));
         this.api = JDABuilder.create(configuration.discordToken, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES)
                 .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS)
                 .addEventListeners(new DiscordJoinLeaveListener(), new CommandHandler())
                 .build();
-        this.inGameNamesManager = new InGameNamesManager(mongoDatabase.getCollection("inGameNicks"));
+        this.inGameNamesManager = new InGameNamesManager(mongoDatabase.getCollection("z"));
         start();
 
     }

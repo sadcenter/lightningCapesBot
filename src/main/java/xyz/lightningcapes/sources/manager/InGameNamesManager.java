@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 public final class InGameNamesManager {
 
     private final MongoCollection<Document> collection;
-    private final LoadingCache<Long, String> inGameCache = Caffeine.newBuilder().expireAfterWrite(2, TimeUnit.HOURS).build(new CacheLoader<Long, String>() {
+    private final LoadingCache<Long, String> inGameCache = Caffeine.newBuilder().expireAfterWrite(3, TimeUnit.MINUTES).build(new CacheLoader<Long, String>() {
         @Override
         public @Nullable String load(Long id) throws Exception {
             Document document = collection.find(new Document("id", id)).first();

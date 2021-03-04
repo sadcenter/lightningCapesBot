@@ -16,6 +16,7 @@ public final class FreeItemCommand extends Command {
 
     private final String stringPath = "/free/items/";
     private final File path = new File(System.getProperty("user.dir") + stringPath);
+
     public FreeItemCommand(long id) {
         super("fitem", id);
     }
