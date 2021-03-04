@@ -40,7 +40,7 @@ public final class KitCommand extends Command {
 
         if (found == null) {
             textChannel.sendMessage(EmbedUtil.getEmbed(":thinking:",
-                    "Taki zestaw nie istnieje",
+                    "Taki zestaw nie istnie!",
                     name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
             return;
