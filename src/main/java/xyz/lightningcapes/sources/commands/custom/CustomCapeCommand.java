@@ -21,8 +21,8 @@ public final class CustomCapeCommand extends Command {
     private final String dir = "downloaded/capes/";
     private final MongoCollection<Document> collection;
 
-    public CustomCapeCommand(String name, long id, MongoCollection<Document> collection) {
-        super(name, id);
+    public CustomCapeCommand(long id, MongoCollection<Document> collection) {
+        super("customcape", id);
         this.collection = collection;
     }
 

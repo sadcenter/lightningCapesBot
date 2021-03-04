@@ -37,8 +37,10 @@ public final class CapeCommand extends Command {
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
             return;
         }
-        Bootstrap.getInstance().getMongoDatabase().getCollection("capes")
-                .replaceOne(new Document("name", name), new Document("name", name).append("cape", "/allcapes/" + found.getName()));
+        Document nameDocument = new Document("name", name);
+        System.out.println("Replacing document!");
+        System.out.println(Bootstrap.getInstance().getMongoDatabase().getCollection("capes")
+                .replaceOne(nameDocument, nameDocument.append("cape", "/allcapes/" + found.getName())).getMatchedCount());
         textChannel.sendMessage(EmbedUtil.getEmbed("Nadano pelerynke!",
                 "Aby zobaczyć nową pelerynkę zrestartuj mc :exploding_head:", name))
                 .delay(5, TimeUnit.SECONDS)

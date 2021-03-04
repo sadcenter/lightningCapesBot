@@ -16,6 +16,7 @@ import xyz.lightningcapes.sources.commands.TakeCommand;
 import xyz.lightningcapes.sources.commands.admin.AdminUnRegisterCommand;
 import xyz.lightningcapes.sources.commands.cape.CapeCommand;
 import xyz.lightningcapes.sources.commands.custom.CustomCapeCommand;
+import xyz.lightningcapes.sources.commands.custom.CustomItemCommand;
 import xyz.lightningcapes.sources.commands.custom.CustomWingsCommand;
 import xyz.lightningcapes.sources.commands.hats.FreeHatCommand;
 import xyz.lightningcapes.sources.commands.hats.PaidHatCommand;
@@ -33,10 +34,8 @@ import xyz.lightningcapes.sources.tasks.CustomStatusUpdateTask;
 @Getter
 public final class LightningBot {
 
-    public static final char PREFIX = '!';
-
+    private final char PREFIX = '!';
     private final JDA api;
-
     private final MongoDatabase mongoDatabase;
     private final InGameNamesManager inGameNamesManager;
     private final ConfigurationStorage configuration;
@@ -58,19 +57,14 @@ public final class LightningBot {
                 new AdminUnRegisterCommand(configuration.adminCommandsChannel),
                 new PaidItemCommand(configuration.channelId),
                 new CustomWingsCommand(configuration.channelId, mongoDatabase.getCollection("wings")),
-                // new CustomItemCommand(configuration.channelId, mongoDatabase.getCollection("items")),
-                new CustomCapeCommand("customcape", configuration.channelId, mongoDatabase.getCollection("capes")),
+                new CustomItemCommand(configuration.channelId, mongoDatabase.getCollection("items")),
+                new CustomCapeCommand(configuration.channelId, mongoDatabase.getCollection("capes")),
                 new CapeCommand(configuration.channelId));
         this.api = JDABuilder.create(configuration.discordToken, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES)
                 .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS)
                 .addEventListeners(new DiscordJoinLeaveListener(), new CommandHandler())
                 .build();
         this.inGameNamesManager = new InGameNamesManager(mongoDatabase.getCollection("inGameNicks"));
-        start();
-
-    }
-
-    private void start() {
         new CustomStatusUpdateTask().startAsync();
     }
 }

@@ -7,7 +7,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import xyz.lightningcapes.Bootstrap;
 import xyz.lightningcapes.api.Command;
-import xyz.lightningcapes.sources.LightningBot;
 
 import java.util.Arrays;
 
@@ -22,7 +21,7 @@ public class CommandHandler extends ListenerAdapter {
         String content = message.getContentRaw();
         TextChannel channel = event.getChannel();
         long channelId = channel.getIdLong();
-        if (content.length() != 0 && content.charAt(0) == LightningBot.PREFIX) {
+        if (content.length() != 0 && content.charAt(0) == Bootstrap.getInstance().getPREFIX()) {
             String[] raw = content.split(" ");
             if (raw.length == 0) {
                 return;
