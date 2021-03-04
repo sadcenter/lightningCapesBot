@@ -65,7 +65,7 @@ public final class LightningBot {
                 .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS)
                 .addEventListeners(new DiscordJoinLeaveListener(), new CommandHandler())
                 .build();
-        this.inGameNamesManager = new InGameNamesManager(mongoDatabase.getCollection("z"));
+        this.inGameNamesManager = new InGameNamesManager(mongoDatabase.getCollection("inGameNicks"));
         start();
 
     }
