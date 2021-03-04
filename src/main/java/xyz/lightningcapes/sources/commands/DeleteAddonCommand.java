@@ -44,8 +44,12 @@ public final class DeleteAddonCommand extends Command {
             mongoDatabase.getCollection("skins").replaceOne(new Document("name", name), new Document("name", name).append("skin", "null"));
             textChannel.sendMessage(EmbedUtil.getEmbed("Usunieto twoj itemek!", "Twoj itemek zostal usuniety", name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
+        } else if (addonType.equalsIgnoreCase("hat")) {
+            mongoDatabase.getCollection("hats").replaceOne(new Document("name", name), new Document("name", name).append("hat", "null"));
+            textChannel.sendMessage(EmbedUtil.getEmbed("Usunieto twoja czapke!", "Twoja czapka zostala usunieta!", name))
+                    .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
         } else {
-            textChannel.sendMessage(EmbedUtil.getEmbed("Poprawne uzycie: cape/wings/item!", ":thinking:", name))
+            textChannel.sendMessage(EmbedUtil.getEmbed("Poprawne uzycie: cape/wings/item/skin/hat!", ":thinking:", name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
         }
 
