@@ -27,7 +27,7 @@ public final class CustomItemCommand extends Command {
     }
 
     @Override
-    public void execute(Member user, Message message, TextChannel textChannel, String... args) {
+    public void handle(Member user, Message message, TextChannel textChannel, String... args) {
         if (args.length == 0 && message.getAttachments().isEmpty()) {
             message.delete().queue();
             return;

@@ -19,14 +19,14 @@ public class InGameNamesManager {
     private final LoadingCache<Long, String> inGameCache = Caffeine.newBuilder()
             .expireAfterWrite(3, TimeUnit.MINUTES)
             .build(new CacheLoader<>() {
-        @Override
-        public @Nullable String load(Long id) {
-            Document document = collection.find(new Document("id", id)).first();
-            if (document == null)
-                return null;
-            return document.getString("name");
-        }
-    });
+                @Override
+                public @Nullable String load(Long id) {
+                    Document document = collection.find(new Document("id", id)).first();
+                    if (document == null)
+                        return null;
+                    return document.getString("name");
+                }
+            });
 
     public String getName(long id) {
         return this.inGameCache.get(id);

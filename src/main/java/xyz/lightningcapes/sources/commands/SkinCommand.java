@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public final class SkinCommand extends Command {
@@ -28,9 +29,9 @@ public final class SkinCommand extends Command {
     }
 
     @Override
-    public void execute(Member user, Message message, TextChannel textChannel, String... args) {
-
-        if (args.length == 0 && message.getAttachments().isEmpty()) {
+    public void handle(Member user, Message message, TextChannel textChannel, String... args) {
+        List<Message.Attachment> attachments = message.getAttachments();
+        if (args.length == 0 && attachments.isEmpty()) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Wyslij zalacznik, nie pusta komende!",
                     "Musisz wyslac nar argument :thinking:", null))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
@@ -48,12 +49,7 @@ public final class SkinCommand extends Command {
             message.delete().queue();
             return;
         }
-
-        //String raw = args[0];
-        //String[] split = raw.split("/");
-        //String pathName = dir + split[split.length - 1];
-
-        if (message.getAttachments().isEmpty()) {
+        if (attachments.isEmpty()) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Musisz zalaczyc obraz!",
                     "Zalacz obraz :thinking:",
                     name))
@@ -63,8 +59,7 @@ public final class SkinCommand extends Command {
         }
 
         try {
-            //FileUtils.copyURLToFile(new URL(raw), new File(pathName));
-            try (InputStream in = message.getAttachments().get(0).retrieveInputStream().get()) {
+            try (InputStream in = attachments.get(0).retrieveInputStream().get()) {
                 if (in.available() > 1_000_000) {
                     textChannel.sendMessage(EmbedUtil.getEmbed("Wielkosc pliku jest zbyt duza!", "Limit wielkosci skina to 1mb!", name))
                             .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();

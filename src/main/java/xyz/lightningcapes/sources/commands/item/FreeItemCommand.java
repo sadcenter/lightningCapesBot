@@ -22,7 +22,7 @@ public final class FreeItemCommand extends Command {
     }
 
     @Override
-    public void execute(Member user, Message message, TextChannel textChannel, String... args) {
+    public void handle(Member user, Message message, TextChannel textChannel, String... args) {
         message.delete().queue();
 
         if (args.length == 0) {

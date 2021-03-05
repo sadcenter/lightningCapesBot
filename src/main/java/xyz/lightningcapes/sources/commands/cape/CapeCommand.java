@@ -21,7 +21,7 @@ public final class CapeCommand extends Command {
     }
 
     @Override
-    public void execute(Member user, Message message, TextChannel textChannel, String... args) {
+    public void handle(Member user, Message message, TextChannel textChannel, String... args) {
         message.delete().queue();
         if (args.length != 1) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Błąd",

@@ -18,7 +18,7 @@ public class AdminUnRegisterCommand extends Command {
     }
 
     @Override
-    public void execute(Member user, Message message, TextChannel textChannel, String... args) {
+    public void handle(Member user, Message message, TextChannel textChannel, String... args) {
         message.delete().queue();
         List<Member> mentionedMembers = message.getMentionedMembers();
         if (args.length != 1 || mentionedMembers.isEmpty()) {

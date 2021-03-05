@@ -31,7 +31,7 @@ public class CommandHandler extends ListenerAdapter {
                     .getByName(split[0].substring(1));
 
             if (command == null || command.getChannelId() != channelId) message.delete().queue();
-            else command.execute(event.getMember(), message, channel, Arrays.copyOfRange(split, 1, rawLength));
+            else command.handle(event.getMember(), message, channel, Arrays.copyOfRange(split, 1, rawLength));
         } else if (Bootstrap.getInstance().getConfiguration().notWriteChannels.contains(channelId)) {
             message.delete().queue();
         }
