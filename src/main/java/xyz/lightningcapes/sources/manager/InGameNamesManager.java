@@ -4,15 +4,21 @@ import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.mongodb.client.MongoCollection;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.bson.Document;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.concurrent.TimeUnit;
 
-public final class InGameNamesManager {
+@RequiredArgsConstructor
+@Getter
+public class InGameNamesManager {
 
     private final MongoCollection<Document> collection;
-    private final LoadingCache<Long, String> inGameCache = Caffeine.newBuilder().expireAfterWrite(3, TimeUnit.MINUTES).build(new CacheLoader<>() {
+    private final LoadingCache<Long, String> inGameCache = Caffeine.newBuilder()
+            .expireAfterWrite(3, TimeUnit.MINUTES)
+            .build(new CacheLoader<>() {
         @Override
         public @Nullable String load(Long id) {
             Document document = collection.find(new Document("id", id)).first();
@@ -21,11 +27,6 @@ public final class InGameNamesManager {
             return document.getString("name");
         }
     });
-
-
-    public InGameNamesManager(MongoCollection<Document> collection) {
-        this.collection = collection;
-    }
 
     public String getName(long id) {
         return this.inGameCache.get(id);
@@ -38,9 +39,5 @@ public final class InGameNamesManager {
     public void register(long id, String nick) {
         this.collection.insertOne(new Document("id", id).append("name", nick));
         this.inGameCache.asMap().put(id, nick);
-    }
-
-    public LoadingCache<Long, String> getRaw() {
-        return inGameCache;
     }
 }

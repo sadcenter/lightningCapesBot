@@ -6,8 +6,11 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.jetbrains.annotations.NotNull;
 import xyz.lightningcapes.api.handler.CommandHandler;
 import xyz.lightningcapes.sources.commands.DeleteAddonCommand;
 import xyz.lightningcapes.sources.commands.KitCommand;
@@ -43,8 +46,8 @@ public final class LightningBot {
 
     @SneakyThrows
     public LightningBot() {
-        this.configuration = new Configuration().getConfigurationStorage();
-        this.mongoDatabase = MongoClients.create(configuration.mongoString).getDatabase(configuration.mongoDatabase);
+        configuration = new Configuration().getConfigurationStorage();
+        mongoDatabase = MongoClients.create(configuration.mongoString).getDatabase(configuration.mongoDatabase);
         commandManager = new CommandManager(new TakeCommand(configuration.takeID),
                 new FreeWingsCommand(configuration.channelId),
                 new PaidWingsCommand(configuration.channelId),
@@ -60,11 +63,15 @@ public final class LightningBot {
                 new CustomItemCommand(configuration.channelId, mongoDatabase.getCollection("items")),
                 new CustomCapeCommand(configuration.channelId, mongoDatabase.getCollection("capes")),
                 new CapeCommand(configuration.channelId));
-        this.api = JDABuilder.create(configuration.discordToken, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES)
+        inGameNamesManager = new InGameNamesManager(mongoDatabase.getCollection("inGameNicks"));
+        api = JDABuilder.create(configuration.discordToken, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES)
                 .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS)
-                .addEventListeners(new DiscordJoinLeaveListener(), new CommandHandler())
+                .addEventListeners(new DiscordJoinLeaveListener(), new CommandHandler(), new ListenerAdapter() {
+                    @Override
+                    public void onReady(@NotNull ReadyEvent event) {
+                        new CustomStatusUpdateTask().startAsync();
+                    }
+                })
                 .build();
-        this.inGameNamesManager = new InGameNamesManager(mongoDatabase.getCollection("inGameNicks"));
-        new CustomStatusUpdateTask().startAsync();
     }
 }

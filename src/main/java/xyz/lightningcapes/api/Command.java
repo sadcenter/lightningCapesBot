@@ -14,5 +14,5 @@ public abstract class Command {
     private final String name;
     private final long channelId;
 
-    public abstract void handle(Member user, Message message, TextChannel textChannel, String... args);
+    public abstract void execute(Member user, Message message, TextChannel textChannel, String... args);
 }

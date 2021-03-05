@@ -18,7 +18,7 @@ public final class DeleteAddonCommand extends Command {
     }
 
     @Override
-    public void handle(Member user, Message message, TextChannel textChannel, String... args) {
+    public void execute(Member user, Message message, TextChannel textChannel, String... args) {
         message.delete().queue();
         if (args.length == 0) {
             return;
@@ -49,7 +49,7 @@ public final class DeleteAddonCommand extends Command {
             textChannel.sendMessage(EmbedUtil.getEmbed("Usunieto twoja czapke!", "Twoja czapka zostala usunieta!", name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
         } else {
-            textChannel.sendMessage(EmbedUtil.getEmbed("Poprawne uzycie: cape/wings/item/skin/hat!", ":thinking:", name))
+            textChannel.sendMessage(EmbedUtil.getEmbed("Poprawne uzycie: " + Bootstrap.getInstance().getPREFIX() + "usun cape/wings/item/skin/hat!", ":thinking:", name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
         }
 

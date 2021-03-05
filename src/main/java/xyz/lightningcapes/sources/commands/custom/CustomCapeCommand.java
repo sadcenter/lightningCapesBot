@@ -27,7 +27,7 @@ public final class CustomCapeCommand extends Command {
     }
 
     @Override
-    public void handle(Member user, Message message, TextChannel textChannel, String... args) {
+    public void execute(Member user, Message message, TextChannel textChannel, String... args) {
 
         if (args.length == 0 && message.getAttachments().isEmpty()) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Wyslij argument, nie pusta komende!",
@@ -76,7 +76,7 @@ public final class CustomCapeCommand extends Command {
                 Files.copy(in, Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
                 message.delete().queue();
                 collection.replaceOne(new Document("name", name), new Document("cape", "/" + path)
-                                .append("name", name));
+                        .append("name", name));
             }
         } catch (Exception e) {
             e.printStackTrace();

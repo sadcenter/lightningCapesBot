@@ -7,5 +7,4 @@ public final class RoleUtil {
     public static boolean hasRole(Member member, long id) {
         return member.getRoles().contains(member.getGuild().getRoleById(id));
     }
-
 }

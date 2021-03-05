@@ -1,6 +1,5 @@
 package xyz.lightningcapes.sources.commands.hats;
 
-import lombok.SneakyThrows;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -23,9 +22,8 @@ public final class PaidHatCommand extends Command {
         super("phat", id);
     }
 
-    @SneakyThrows
     @Override
-    public void handle(Member user, Message message, TextChannel textChannel, String... args) {
+    public void execute(Member user, Message message, TextChannel textChannel, String... args) {
         message.delete().queue();
 
         if (args.length == 0) {

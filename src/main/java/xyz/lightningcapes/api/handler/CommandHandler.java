@@ -22,25 +22,16 @@ public class CommandHandler extends ListenerAdapter {
         TextChannel channel = event.getChannel();
         long channelId = channel.getIdLong();
         if (content.length() != 0 && content.charAt(0) == Bootstrap.getInstance().getPREFIX()) {
-            String[] raw = content.split(" ");
-            if (raw.length == 0) {
+            String[] split = content.split(" ");
+            int rawLength = split.length;
+            if (rawLength == 0) {
                 return;
             }
-            String substring = raw[0].substring(1);
             Command command = Bootstrap.getInstance().getCommandManager()
-                    .getByName(substring);
+                    .getByName(split[0].substring(1));
 
-            if (command == null) {
-                message.delete().queue();
-                return;
-            }
-
-            if (command.getChannelId() != channelId) {
-                message.delete().queue();
-                return;
-            }
-
-            command.handle(event.getMember(), message, channel, Arrays.copyOfRange(raw, 1, raw.length));
+            if (command == null || command.getChannelId() != channelId) message.delete().queue();
+            else command.execute(event.getMember(), message, channel, Arrays.copyOfRange(split, 1, rawLength));
         } else if (Bootstrap.getInstance().getConfiguration().notWriteChannels.contains(channelId)) {
             message.delete().queue();
         }

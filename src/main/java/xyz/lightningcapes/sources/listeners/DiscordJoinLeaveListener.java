@@ -18,28 +18,22 @@ public final class DiscordJoinLeaveListener extends ListenerAdapter {
 
         MongoDatabase mongoDatabase = Bootstrap.getInstance().getMongoDatabase();
 
-        mongoDatabase
-                .getCollection("inGameNicks")
+        mongoDatabase.getCollection("inGameNicks")
                 .deleteOne(new Document("id", id));
 
-        mongoDatabase
-                .getCollection("wings")
+        mongoDatabase.getCollection("wings")
                 .deleteOne(new Document("name", name));
 
-        mongoDatabase
-                .getCollection("capes")
+        mongoDatabase.getCollection("capes")
                 .deleteOne(new Document("name", name));
 
-        mongoDatabase
-                .getCollection("items")
+        mongoDatabase.getCollection("items")
                 .deleteOne(new Document("name", name));
 
-        mongoDatabase
-                .getCollection("hats")
+        mongoDatabase.getCollection("hats")
                 .deleteOne(new Document("name", name));
 
-        mongoDatabase
-                .getCollection("skins")
+        mongoDatabase.getCollection("skins")
                 .deleteOne(new Document("name", name));
     }
 }

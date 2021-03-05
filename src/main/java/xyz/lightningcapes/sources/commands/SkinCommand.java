@@ -28,7 +28,7 @@ public final class SkinCommand extends Command {
     }
 
     @Override
-    public void handle(Member user, Message message, TextChannel textChannel, String... args) {
+    public void execute(Member user, Message message, TextChannel textChannel, String... args) {
 
         if (args.length == 0 && message.getAttachments().isEmpty()) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Wyslij zalacznik, nie pusta komende!",

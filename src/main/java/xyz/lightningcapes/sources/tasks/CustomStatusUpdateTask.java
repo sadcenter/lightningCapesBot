@@ -29,10 +29,11 @@ public final class CustomStatusUpdateTask extends AbstractScheduledService {
 
     @Override
     protected void runOneIteration() {
-        if (index >= this.activities.size()) {
+        if (index >= activities.size()) {
             index = 0;
         }
-        Bootstrap.getInstance().getApi().getPresence().setActivity(Activity.playing(activities.get(index)));
+        Bootstrap.getInstance().getApi().getPresence()
+                .setActivity(Activity.playing(activities.get(index)));
         index++;
     }
 

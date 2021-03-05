@@ -23,10 +23,10 @@ public final class PaidItemCommand extends Command {
     }
 
     @Override
-    public void handle(Member user, Message message, TextChannel textChannel, String... args) {
+    public void execute(Member user, Message message, TextChannel textChannel, String... args) {
         message.delete().queue();
 
-        if (args.length == 0) {
+        if (args.length != 1) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Wyslij id, nie pusta komende!",
                     "Musisz nam wyslac id itemu ktory chcesz :thinking:", null))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
@@ -37,31 +37,29 @@ public final class PaidItemCommand extends Command {
 
         if (!RoleUtil.hasRole(user, Bootstrap.getInstance().getConfiguration().premiumId)) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Hola hola :rage:",
-                    "Nie posiadasz do tego dostepu :thinking:",
-                    name))
+                    "Nie posiadasz do tego dostepu :thinking:", name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
             return;
         }
 
-        String cape = args[0];
-        if (cape.length() > 16) {
+        String item = args[0];
+        if (item.length() > 16) {
             return;
         }
 
-        File found = ReaderUtils.found(path, args[0] + ".png");
+        File found = ReaderUtils.found(path, item + ".png");
         if (found == null) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Nie znaleziono takiego itemu :frowning:",
-                    "Taka pelerynka nie istnieje, zobacz wszystkie perlerynki na odpowiednim kanale",
-                    name))
+                    "Taka pelerynka nie istnieje, zobacz wszystkie perlerynki na odpowiednim kanale", name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
             return;
         }
 
 
-        Bootstrap.getInstance().getMongoDatabase().getCollection("items").replaceOne(new Document("name", name), new Document("name", name).append("item", stringPath + found.getName()));
+        Bootstrap.getInstance().getMongoDatabase().getCollection("items")
+                .replaceOne(new Document("name", name), new Document("name", name).append("item", stringPath + found.getName()));
         textChannel.sendMessage(EmbedUtil.getEmbed("Item zostal nadany :clap:",
-                "Aby zobaczyc item zrestartuj minecrafta!",
-                name))
+                "Aby zobaczyc item zrestartuj minecrafta!", name))
                 .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
     }
 

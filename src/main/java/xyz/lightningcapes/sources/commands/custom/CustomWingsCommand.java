@@ -27,7 +27,7 @@ public final class CustomWingsCommand extends Command {
     }
 
     @Override
-    public void handle(Member user, Message message, TextChannel textChannel, String... args) {
+    public void execute(Member user, Message message, TextChannel textChannel, String... args) {
         String name = Bootstrap.getInstance().getInGameNamesManager().getName(user.getIdLong());
 
         if (!RoleUtil.hasRole(user, Bootstrap.getInstance().getConfiguration().premiumId)) {

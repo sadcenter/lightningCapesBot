@@ -18,10 +18,10 @@ public class AdminUnRegisterCommand extends Command {
     }
 
     @Override
-    public void handle(Member user, Message message, TextChannel textChannel, String... args) {
+    public void execute(Member user, Message message, TextChannel textChannel, String... args) {
         message.delete().queue();
         List<Member> mentionedMembers = message.getMentionedMembers();
-        if (args.length == 0 || mentionedMembers.isEmpty()) {
+        if (args.length != 1 || mentionedMembers.isEmpty()) {
             return;
         }
 
@@ -42,7 +42,7 @@ public class AdminUnRegisterCommand extends Command {
         mongoDatabase.getCollection("capes").deleteOne(new Document("name", name));
         mongoDatabase.getCollection("hats").deleteOne(new Document("name", name));
         mongoDatabase.getCollection("items").deleteOne(new Document("name", name));
-        Bootstrap.getInstance().getInGameNamesManager().getRaw().refresh(mentioned.getIdLong());
+        Bootstrap.getInstance().getInGameNamesManager().getInGameCache().refresh(mentioned.getIdLong());
 
         mentioned.getGuild().removeRoleFromMember(mentioned.getIdLong(), mentioned.getGuild().getRoleById(Bootstrap.getInstance().getConfiguration().registeredId)).queue();
         textChannel.sendMessage(EmbedUtil.getEmbed("Odrejestrowano typka!", "Typek odrejestrowany :thinking:", admin))
