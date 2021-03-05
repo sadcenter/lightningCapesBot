@@ -1,7 +1,6 @@
 package xyz.lightningcapes.sources.listeners;
 
 import com.mongodb.client.MongoDatabase;
-import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
@@ -42,22 +41,5 @@ public final class DiscordJoinLeaveListener extends ListenerAdapter {
         mongoDatabase
                 .getCollection("skins")
                 .deleteOne(new Document("name", name));
-    }
-
-    @Override
-    public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-      /*  OffsetDateTime timeCreated = OffsetDateTime.now();
-        boolean b = timeCreated.toInstant().toEpochMilli() > System.currentTimeMillis() - fourteenDays;
-        System.out.println(b);
-        if (b) {
-            //event.getGuild().ban(event.getUser(), 1).queue();
-            event.getUser().openPrivateChannel().complete().sendMessage("Twoje konto zostalo zbanowane! Twoje konto nie ma wiecej niz 14 dni :frowning:").queue();
-            return;
-        }
-
-        event.getGuild().addRoleToMember(event.getMember().getId(), event.getGuild().getRoleById(Boostrap.getInstance().getConfiguration().unregisteredId)).queue();
-
-
-       */
     }
 }
