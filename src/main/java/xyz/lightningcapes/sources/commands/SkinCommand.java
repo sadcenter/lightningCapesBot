@@ -30,12 +30,12 @@ public final class SkinCommand extends Command {
 
     @Override
     public void handle(Member user, Message message, TextChannel textChannel, String... args) {
+        message.delete().queue();
         List<Message.Attachment> attachments = message.getAttachments();
         if (args.length == 0 && attachments.isEmpty()) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Wyslij zalacznik, nie pusta komende!",
                     "Musisz wyslac nar argument :thinking:", null))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
-            message.delete().queue();
             return;
         }
 
@@ -46,7 +46,6 @@ public final class SkinCommand extends Command {
                     "Nie posiadasz do tego dostepu :thinking:",
                     name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
-            message.delete().queue();
             return;
         }
         if (attachments.isEmpty()) {
@@ -54,23 +53,22 @@ public final class SkinCommand extends Command {
                     "Zalacz obraz :thinking:",
                     name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
-            message.delete().queue();
             return;
         }
 
         try {
             try (InputStream in = attachments.get(0).retrieveInputStream().get()) {
                 if (in.available() > 1_000_000) {
-                    textChannel.sendMessage(EmbedUtil.getEmbed("Wielkosc pliku jest zbyt duza!", "Limit wielkosci skina to 1mb!", name))
-                            .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
-                    message.delete().queue();
+                    textChannel.sendMessage(EmbedUtil.getEmbed("Błąd", "Limit wielkości pliku to 1 MB!", name))
+                            .delay(5, TimeUnit.SECONDS)
+                            .flatMap(Message::delete)
+                            .queue();
                     return;
                 }
                 textChannel.sendMessage(EmbedUtil.getEmbed("Sukces", "Nadano twoj wlasny skin :exploding_head:", name))
                         .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
                 String path = dir + name + ".png";
                 Files.copy(in, Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
-                message.delete().queue();
                 Document nameDocument = new Document("name", name);
                 collection.replaceOne(nameDocument, nameDocument.append("skin", "/" + path));
             }

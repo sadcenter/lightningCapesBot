@@ -54,8 +54,10 @@ public final class CustomWingsCommand extends Command {
             //FileUtils.copyURLToFile(new URL(raw), new File(pathName));
             try (InputStream in = message.getAttachments().get(0).retrieveInputStream().get()) {
                 if (in.available() > 1_000_000) {
-                    textChannel.sendMessage(EmbedUtil.getEmbed("Wielkosc pliku jest zbyt duza!", "Limit wielkosci skrzydel to 1mb!", name))
-                            .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
+                    textChannel.sendMessage(EmbedUtil.getEmbed("Błąd", "Limit wielkości pliku to 1 MB!", name))
+                            .delay(5, TimeUnit.SECONDS)
+                            .flatMap(Message::delete)
+                            .queue();
                     return;
                 }
                 String pathName = dir + name + ".png";

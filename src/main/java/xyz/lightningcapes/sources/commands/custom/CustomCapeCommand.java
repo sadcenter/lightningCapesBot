@@ -65,8 +65,10 @@ public final class CustomCapeCommand extends Command {
             //FileUtils.copyURLToFile(new URL(raw), new File(pathName));
             try (InputStream in = message.getAttachments().get(0).retrieveInputStream().get()) {
                 if (in.available() > 100_000) {
-                    textChannel.sendMessage(EmbedUtil.getEmbed("Wielkosc pliku jest zbyt duza!", "Limit wielkosci pelerynki to 100kb!", name))
-                            .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
+                    textChannel.sendMessage(EmbedUtil.getEmbed("Błąd", "Limit wielkości pliku to 1 MB!", name))
+                            .delay(5, TimeUnit.SECONDS)
+                            .flatMap(Message::delete)
+                            .queue();
                     message.delete().queue();
                     return;
                 }
