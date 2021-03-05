@@ -31,7 +31,8 @@ public class AdminUnRegisterCommand extends Command {
         String name = Bootstrap.getInstance().getInGameNamesManager().getName(mentioned.getIdLong());
 
         if (name == null) {
-            textChannel.sendMessage(EmbedUtil.getEmbed("Nie znaleziono takiego uzytkownika!", "Ten ziomek nie jest zarejestrowany :thinking:", admin))
+            textChannel.sendMessage(EmbedUtil.getEmbed("Nie znaleziono takiego uzytkownika!",
+                    "Ten ziomek nie jest zarejestrowany :thinking:", admin))
                     .queue();
             return;
         }

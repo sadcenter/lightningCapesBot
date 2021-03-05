@@ -28,14 +28,13 @@ public final class CustomWingsCommand extends Command {
 
     @Override
     public void handle(Member user, Message message, TextChannel textChannel, String... args) {
+        message.delete().queue();
         String name = Bootstrap.getInstance().getInGameNamesManager().getName(user.getIdLong());
-
         if (!RoleUtil.hasRole(user, Bootstrap.getInstance().getConfiguration().premiumId)) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Hola hola :rage:",
                     "Nie posiadasz do tego dostepu :thinking:",
                     name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
-            message.delete().queue();
             return;
         }
 
@@ -44,7 +43,6 @@ public final class CustomWingsCommand extends Command {
                     "Zalacz obraz :thinking:",
                     name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
-            message.delete().queue();
             return;
         }
 
@@ -58,24 +56,18 @@ public final class CustomWingsCommand extends Command {
                 if (in.available() > 1_000_000) {
                     textChannel.sendMessage(EmbedUtil.getEmbed("Wielkosc pliku jest zbyt duza!", "Limit wielkosci skrzydel to 1mb!", name))
                             .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
-                    message.delete().queue();
                     return;
                 }
                 String pathName = dir + name + ".png";
                 textChannel.sendMessage(EmbedUtil.getEmbed("Sukces", "Nadano twoje wlasne skrzydla :exploding_head:", name))
                         .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
                 Files.copy(in, Paths.get(pathName), StandardCopyOption.REPLACE_EXISTING);
-                message.delete().queue();
                 collection.replaceOne(new Document("name", name), new Document("wings", "/" + pathName).append("name", name));
             }
         } catch (Exception e) {
             e.printStackTrace();
             textChannel.sendMessage(EmbedUtil.getEmbed("Wystapil blad!", "sadcenter cos zjebalx", null))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
-            message.delete().queue();
         }
-
     }
-
-
 }
