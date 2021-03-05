@@ -39,7 +39,7 @@ public final class FreeWingsCommand extends Command {
 
         String name = Bootstrap.getInstance().getInGameNamesManager().getName(user.getIdLong());
 
-        File found = ReaderUtils.found(path, args[0] + ".png");
+        File found = ReaderUtils.found(path, cape + ".png");
         if (found == null) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Nie znaleziono takich skrzydel :frowning:",
                     "Takie skrzydla nie istnieja, zobacz wszystkie skrzydla na odpowiednim kanale",
@@ -49,7 +49,8 @@ public final class FreeWingsCommand extends Command {
         }
 
 
-        Bootstrap.getInstance().getMongoDatabase().getCollection("wings").replaceOne(new Document("name", name), new Document("name", name).append("wings", stringPath + found.getName()));
+        Bootstrap.getInstance().getMongoDatabase().getCollection("wings")
+                .replaceOne(new Document("name", name), new Document("name", name).append("wings", stringPath + found.getName()));
         textChannel.sendMessage(EmbedUtil.getEmbed("Skrzydla zostaly nadane :clap:",
                 "Aby zobaczyc skrzydla zrestartuj minecrafta!",
                 name))

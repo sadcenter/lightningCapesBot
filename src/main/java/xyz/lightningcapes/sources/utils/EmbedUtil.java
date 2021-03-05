@@ -3,18 +3,17 @@ package xyz.lightningcapes.sources.utils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 public class EmbedUtil {
 
-    public static MessageEmbed getEmbed(String title, String desc, String nick) {
+    public static MessageEmbed getEmbed(String title, String description, String name) {
         EmbedBuilder embedBuilder = new EmbedBuilder()
                 .setTitle(title)
-                .setDescription(desc)
-                .setTimestamp(new Date().toInstant())
+                .setDescription(description)
+                .setTimestamp(OffsetDateTime.now())
                 .setFooter("made by sadcenter & warsztat");
-        if (nick != null) embedBuilder.setThumbnail("https://mc-heads.net/head/" + nick);
-
+        if (name != null) embedBuilder.setThumbnail("https://mc-heads.net/head/" + name);
         return embedBuilder.build();
     }
 }

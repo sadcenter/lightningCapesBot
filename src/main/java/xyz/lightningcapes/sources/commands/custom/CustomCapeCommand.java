@@ -75,14 +75,13 @@ public final class CustomCapeCommand extends Command {
                 String path = dir + name + ".png";
                 Files.copy(in, Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
                 message.delete().queue();
-                collection.replaceOne(new Document("name", name), new Document("cape", "/" + path).append("name", name));
+                collection.replaceOne(new Document("name", name), new Document("cape", "/" + path)
+                                .append("name", name));
             }
         } catch (Exception e) {
             e.printStackTrace();
             textChannel.sendMessage(EmbedUtil.getEmbed("Wystapil blad!", "sadcenter cos zjebalx", null))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
         }
-
     }
-
 }

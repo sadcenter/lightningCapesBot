@@ -27,8 +27,8 @@ public class CommandHandler extends ListenerAdapter {
                 return;
             }
             String substring = raw[0].substring(1);
-            Command command = Bootstrap.getInstance()
-                    .getCommandManager().getByName(substring);
+            Command command = Bootstrap.getInstance().getCommandManager()
+                    .getByName(substring);
 
             if (command == null) {
                 message.delete().queue();
