@@ -71,7 +71,8 @@ public final class SkinCommand extends Command {
                 String path = dir + name + ".png";
                 Files.copy(in, Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
                 message.delete().queue();
-                collection.replaceOne(new Document("name", name), new Document("skin", "/" + path).append("name", name));
+                Document nameDocument = new Document("name", name);
+                collection.replaceOne(nameDocument, nameDocument.append("skin", "/" + path));
             }
         } catch (Exception e) {
             e.printStackTrace();

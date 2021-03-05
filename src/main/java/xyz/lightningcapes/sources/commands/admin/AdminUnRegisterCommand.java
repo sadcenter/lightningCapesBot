@@ -38,11 +38,12 @@ public class AdminUnRegisterCommand extends Command {
         }
 
         MongoDatabase mongoDatabase = Bootstrap.getInstance().getMongoDatabase();
+        Document nameDocument = new Document("name", name);
         mongoDatabase.getCollection("inGameNicks").deleteOne(new Document("id", mentioned.getIdLong()));
-        mongoDatabase.getCollection("wings").deleteOne(new Document("name", name));
-        mongoDatabase.getCollection("capes").deleteOne(new Document("name", name));
-        mongoDatabase.getCollection("hats").deleteOne(new Document("name", name));
-        mongoDatabase.getCollection("items").deleteOne(new Document("name", name));
+        mongoDatabase.getCollection("wings").deleteOne(nameDocument);
+        mongoDatabase.getCollection("capes").deleteOne(nameDocument);
+        mongoDatabase.getCollection("hats").deleteOne(nameDocument);
+        mongoDatabase.getCollection("items").deleteOne(nameDocument);
         Bootstrap.getInstance().getInGameNamesManager().getInGameCache().refresh(mentioned.getIdLong());
 
         mentioned.getGuild().removeRoleFromMember(mentioned.getIdLong(), mentioned.getGuild().getRoleById(Bootstrap.getInstance().getConfiguration().registeredId)).queue();

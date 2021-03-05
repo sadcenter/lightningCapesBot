@@ -62,7 +62,8 @@ public final class CustomWingsCommand extends Command {
                 textChannel.sendMessage(EmbedUtil.getEmbed("Sukces", "Nadano twoje wlasne skrzydla :exploding_head:", name))
                         .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
                 Files.copy(in, Paths.get(pathName), StandardCopyOption.REPLACE_EXISTING);
-                collection.replaceOne(new Document("name", name), new Document("wings", "/" + pathName).append("name", name));
+                Document nameDocument = new Document("name", name);
+                collection.replaceOne(nameDocument, nameDocument.append("wings", "/" + pathName));
             }
         } catch (Exception e) {
             e.printStackTrace();

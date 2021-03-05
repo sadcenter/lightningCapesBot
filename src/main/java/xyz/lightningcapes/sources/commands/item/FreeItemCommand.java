@@ -49,7 +49,9 @@ public final class FreeItemCommand extends Command {
         }
 
 
-        Bootstrap.getInstance().getMongoDatabase().getCollection("items").replaceOne(new Document("name", name), new Document("name", name).append("item", stringPath + found.getName()));
+        Document nameDocument = new Document("name", name);
+        Bootstrap.getInstance().getMongoDatabase().getCollection("items")
+                .replaceOne(nameDocument, nameDocument.append("item", stringPath + found.getName()));
         textChannel.sendMessage(EmbedUtil.getEmbed("Item zostal nadany :clap:",
                 "Aby zobaczyc item zrestartuj minecrafta!",
                 name))

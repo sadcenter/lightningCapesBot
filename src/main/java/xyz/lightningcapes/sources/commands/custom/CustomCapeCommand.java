@@ -33,6 +33,7 @@ public final class CustomCapeCommand extends Command {
             textChannel.sendMessage(EmbedUtil.getEmbed("Wyslij argument, nie pusta komende!",
                     "Musisz wyslac nam item ktory chcesz :thinking:", null))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
+            message.delete().queue();
             return;
         }
 
@@ -43,6 +44,7 @@ public final class CustomCapeCommand extends Command {
                     "Nie posiadasz do tego dostepu :thinking:",
                     name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
+            message.delete().queue();
             return;
         }
 
@@ -55,6 +57,7 @@ public final class CustomCapeCommand extends Command {
                     "Zalacz obraz :thinking:",
                     name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
+            message.delete().queue();
             return;
         }
 
@@ -64,14 +67,16 @@ public final class CustomCapeCommand extends Command {
                 if (in.available() > 100_000) {
                     textChannel.sendMessage(EmbedUtil.getEmbed("Wielkosc pliku jest zbyt duza!", "Limit wielkosci pelerynki to 100kb!", name))
                             .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
+                    message.delete().queue();
                     return;
                 }
                 textChannel.sendMessage(EmbedUtil.getEmbed("Sukces", "Nadano twoja wlasna pelerynke :exploding_head:", name))
                         .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
                 String path = dir + name + ".png";
                 Files.copy(in, Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
-                collection.replaceOne(new Document("name", name), new Document("cape", "/" + path)
-                        .append("name", name));
+                message.delete().queue();
+                Document nameDocument = new Document("name", name);
+                collection.replaceOne(nameDocument, nameDocument.append("cape", "/" + path));
             }
         } catch (Exception e) {
             e.printStackTrace();

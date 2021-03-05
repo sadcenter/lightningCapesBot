@@ -56,10 +56,15 @@ public final class KitCommand extends Command {
 
 
         MongoDatabase mongoDatabase = Bootstrap.getInstance().getMongoDatabase();
-        mongoDatabase.getCollection("wings").replaceOne(new Document("name", name), new Document("name", name).append("wings", found.getWingsName()));
-        mongoDatabase.getCollection("capes").replaceOne(new Document("name", name), new Document("name", name).append("cape", found.getCapeName()));
-        mongoDatabase.getCollection("hats").replaceOne(new Document("name", name), new Document("name", name).append("hat", found.getHatName()));
-        mongoDatabase.getCollection("items").replaceOne(new Document("name", name), new Document("name", name).append("item", found.getItemName()));
+        Document nameDocument = new Document("name", name);
+        mongoDatabase.getCollection("wings")
+                .replaceOne(nameDocument, nameDocument.append("wings", found.getWingsName()));
+        mongoDatabase.getCollection("capes")
+                .replaceOne(nameDocument, nameDocument.append("cape", found.getCapeName()));
+        mongoDatabase.getCollection("hats")
+                .replaceOne(nameDocument, nameDocument.append("hat", found.getHatName()));
+        mongoDatabase.getCollection("items")
+                .replaceOne(nameDocument, nameDocument.append("item", found.getItemName()));
 
         textChannel.sendMessage(EmbedUtil.getEmbed("Skrzydla zostaly nadane :clap:",
                 "Aby zobaczyc skrzydla zrestartuj minecrafta!",

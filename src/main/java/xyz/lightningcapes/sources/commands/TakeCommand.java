@@ -59,21 +59,21 @@ public final class TakeCommand extends Command {
                 "Zostales zarejestrowany :clap:", name))
                 .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
         MongoDatabase mongoDatabase = Bootstrap.getInstance().getMongoDatabase();
-
+        Document nameDocument = new Document("name", name);
         mongoDatabase.getCollection("capes")
-                .insertOne(new Document("name", name).append("cape", "/allcapes/0001.png"));
+                .insertOne(nameDocument.append("cape", "/allcapes/0001.png"));
 
         mongoDatabase.getCollection("wings")
-                .insertOne(new Document("name", name).append("wings", "null"));
+                .insertOne(nameDocument.append("wings", "null"));
 
         mongoDatabase.getCollection("items")
-                .insertOne(new Document("name", name).append("item", "null"));
+                .insertOne(nameDocument.append("item", "null"));
 
         mongoDatabase.getCollection("hats")
-                .insertOne(new Document("name", name).append("hat", "null"));
+                .insertOne(nameDocument.append("hat", "null"));
 
         mongoDatabase.getCollection("skins")
-                .insertOne(new Document("name", name).append("skin", "null"));
+                .insertOne(nameDocument.append("skin", "null"));
 
     }
 

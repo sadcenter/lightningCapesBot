@@ -57,7 +57,9 @@ public final class PaidHatCommand extends Command {
             return;
         }
 
-        Bootstrap.getInstance().getMongoDatabase().getCollection("hats").replaceOne(new Document("name", name), new Document("name", name).append("hat", stringPath + found.getName()));
+        Document nameDocument = new Document("name", name);
+        Bootstrap.getInstance().getMongoDatabase().getCollection("hats")
+                .replaceOne(nameDocument, nameDocument.append("hat", stringPath + found.getName()));
         textChannel.sendMessage(EmbedUtil.getEmbed("Czapka zostala nadana :clap:",
                 "Aby zobaczyc czapke zrestartuj minecrafta!",
                 name))

@@ -28,24 +28,25 @@ public final class DeleteAddonCommand extends Command {
 
         String name = Bootstrap.getInstance().getInGameNamesManager().getName(user.getIdLong());
         String addonType = args[0];
+        Document nameDocument = new Document("name", name);
         if (addonType.equalsIgnoreCase("cape")) {
-            mongoDatabase.getCollection("capes").replaceOne(new Document("name", name), new Document("name", name).append("cape", "null"));
+            mongoDatabase.getCollection("capes").replaceOne(nameDocument, nameDocument.append("cape", "null"));
             textChannel.sendMessage(EmbedUtil.getEmbed("Usunieto twoja pelerynke!", "Twoja pelerynka zostala usunieta", name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
         } else if (addonType.equalsIgnoreCase("wings")) {
-            mongoDatabase.getCollection("wings").replaceOne(new Document("name", name), new Document("name", name).append("wings", "null"));
+            mongoDatabase.getCollection("wings").replaceOne(nameDocument, nameDocument.append("wings", "null"));
             textChannel.sendMessage(EmbedUtil.getEmbed("Usunieto twoje skrzydla!", "Twoje skrzydla zostaly usuniete", name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
         } else if (addonType.equalsIgnoreCase("item")) {
-            mongoDatabase.getCollection("items").replaceOne(new Document("name", name), new Document("name", name).append("item", "null"));
+            mongoDatabase.getCollection("items").replaceOne(nameDocument, nameDocument.append("item", "null"));
             textChannel.sendMessage(EmbedUtil.getEmbed("Usunieto twoj itemek!", "Twoj itemek zostal usuniety", name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
         } else if (addonType.equalsIgnoreCase("skin")) {
-            mongoDatabase.getCollection("skins").replaceOne(new Document("name", name), new Document("name", name).append("skin", "null"));
+            mongoDatabase.getCollection("skins").replaceOne(nameDocument, nameDocument.append("skin", "null"));
             textChannel.sendMessage(EmbedUtil.getEmbed("Usunieto twoj itemek!", "Twoj itemek zostal usuniety", name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
         } else if (addonType.equalsIgnoreCase("hat")) {
-            mongoDatabase.getCollection("hats").replaceOne(new Document("name", name), new Document("name", name).append("hat", "null"));
+            mongoDatabase.getCollection("hats").replaceOne(nameDocument, nameDocument.append("hat", "null"));
             textChannel.sendMessage(EmbedUtil.getEmbed("Usunieto twoja czapke!", "Twoja czapka zostala usunieta!", name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
         } else {

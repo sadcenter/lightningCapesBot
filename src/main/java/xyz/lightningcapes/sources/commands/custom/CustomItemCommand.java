@@ -64,7 +64,8 @@ public final class CustomItemCommand extends Command {
                         .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
                 String pathName = dir + name + ".png";
                 Files.copy(in, Paths.get(pathName), StandardCopyOption.REPLACE_EXISTING);
-                collection.replaceOne(new Document("name", name), new Document("item", "/" + pathName).append("name", name));
+                Document nameDocument = new Document("name", name);
+                collection.replaceOne(nameDocument, nameDocument.append("item", "/" + pathName));
             }
         } catch (Exception e) {
             e.printStackTrace();
