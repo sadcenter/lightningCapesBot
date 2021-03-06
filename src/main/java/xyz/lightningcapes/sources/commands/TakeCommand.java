@@ -10,7 +10,6 @@ import xyz.lightningcapes.api.Command;
 import xyz.lightningcapes.sources.utils.EmbedUtil;
 import xyz.lightningcapes.sources.utils.RegisterUtil;
 
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public final class TakeCommand extends Command {
@@ -53,7 +52,7 @@ public final class TakeCommand extends Command {
             return;
         }
 
-        user.getGuild().addRoleToMember(user.getIdLong(), Objects.requireNonNull(user.getGuild().getRoleById(Bootstrap.getInstance().getConfiguration().registeredId))).queue();
+        user.getGuild().addRoleToMember(user.getIdLong(), Bootstrap.getInstance().getRoleCache().getRegisteredRole()).queue();
         Bootstrap.getInstance().getInGameNamesManager().register(user.getIdLong(), name);
         textChannel.sendMessage(EmbedUtil.getEmbed("Zarejestrowano!",
                 "Zostales zarejestrowany :clap:", name))

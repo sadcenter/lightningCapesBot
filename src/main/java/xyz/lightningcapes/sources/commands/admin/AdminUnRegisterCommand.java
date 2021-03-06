@@ -46,7 +46,7 @@ public class AdminUnRegisterCommand extends Command {
         mongoDatabase.getCollection("items").deleteOne(nameDocument);
         Bootstrap.getInstance().getInGameNamesManager().getInGameCache().refresh(mentioned.getIdLong());
 
-        mentioned.getGuild().removeRoleFromMember(mentioned.getIdLong(), mentioned.getGuild().getRoleById(Bootstrap.getInstance().getConfiguration().registeredId)).queue();
+        mentioned.getGuild().removeRoleFromMember(mentioned.getIdLong(), Bootstrap.getInstance().getRoleCache().getRegisteredRole()).queue();
         textChannel.sendMessage(EmbedUtil.getEmbed("Odrejestrowano typka!", "Typek odrejestrowany :thinking:", admin))
                 .queue();
     }

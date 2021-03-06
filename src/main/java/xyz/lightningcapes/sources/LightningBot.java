@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
 import xyz.lightningcapes.api.handler.CommandHandler;
+import xyz.lightningcapes.sources.cache.RoleCache;
 import xyz.lightningcapes.sources.commands.DeleteAddonCommand;
 import xyz.lightningcapes.sources.commands.KitCommand;
 import xyz.lightningcapes.sources.commands.SkinCommand;
@@ -43,6 +44,7 @@ public final class LightningBot {
     private final InGameNamesManager inGameNamesManager;
     private final ConfigurationStorage configuration;
     private final CommandManager commandManager;
+    private RoleCache roleCache;
 
     @SneakyThrows
     public LightningBot() {
@@ -69,6 +71,7 @@ public final class LightningBot {
                 .addEventListeners(new DiscordJoinLeaveListener(), new CommandHandler(), new ListenerAdapter() {
                     @Override
                     public void onReady(@NotNull ReadyEvent event) {
+                        roleCache = new RoleCache();
                         new CustomStatusUpdateTask().startAsync();
                     }
                 })
