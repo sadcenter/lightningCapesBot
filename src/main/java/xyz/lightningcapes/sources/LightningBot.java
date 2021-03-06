@@ -37,7 +37,7 @@ import xyz.lightningcapes.sources.tasks.CustomStatusUpdateTask;
 @Getter
 public final class LightningBot {
 
-    private final char PREFIX = '!';
+    public static char PREFIX = '!';
     private final JDA api;
     private final MongoDatabase mongoDatabase;
     private final InGameNamesManager inGameNamesManager;
