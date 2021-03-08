@@ -54,7 +54,6 @@ public final class KitCommand extends Command {
             return;
         }
 
-
         MongoDatabase mongoDatabase = Bootstrap.getInstance().getMongoDatabase();
         Document nameDocument = new Document("name", name);
         mongoDatabase.getCollection("wings")
