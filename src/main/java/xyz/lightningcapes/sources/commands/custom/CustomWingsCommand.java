@@ -20,11 +20,10 @@ import java.util.concurrent.TimeUnit;
 public final class CustomWingsCommand extends Command {
 
     private final String dir = "downloaded/wings/";
-    private final MongoCollection<Document> collection;
+    private final MongoCollection<Document> collection = Bootstrap.getInstance().getMongoDatabase().getCollection("wings");
 
-    public CustomWingsCommand(long id, MongoCollection<Document> collection) {
+    public CustomWingsCommand(long id) {
         super("customwings", id);
-        this.collection = collection;
     }
 
     @Override

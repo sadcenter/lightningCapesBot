@@ -26,9 +26,7 @@ public class AdminUnRegisterCommand extends Command {
         }
 
         String admin = Bootstrap.getInstance().getInGameNamesManager().getName(user.getIdLong());
-
-        Member mentioned = mentionedMembers.get(0);
-        long mentionedId = mentioned.getIdLong();
+        long mentionedId = mentionedMembers.get(0).getIdLong();
         String name = Bootstrap.getInstance().getInGameNamesManager().getName(mentionedId);
 
         if (name == null) {
@@ -47,7 +45,7 @@ public class AdminUnRegisterCommand extends Command {
         mongoDatabase.getCollection("items").deleteOne(nameDocument);
         Bootstrap.getInstance().getInGameNamesManager().getInGameCache().refresh(mentionedId);
 
-        mentioned.getGuild().removeRoleFromMember(mentionedId, Bootstrap.getInstance().getRoleCache().getRegisteredRole()).queue();
+        user.getGuild().removeRoleFromMember(mentionedId, Bootstrap.getInstance().getRoleCache().getRegisteredRole()).queue();
         textChannel.sendMessage(EmbedUtil.getEmbed("Odrejestrowano typka!", "Typek odrejestrowany :thinking:", admin))
                 .queue();
     }

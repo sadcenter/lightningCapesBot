@@ -55,17 +55,17 @@ public final class LightningBot {
                 new PaidWingsCommand(configuration.channelId),
                 new FreeHatCommand(configuration.channelId),
                 new PaidHatCommand(configuration.channelId),
-                new SkinCommand(configuration.channelId, mongoDatabase.getCollection("skins")),
+                new SkinCommand(configuration.channelId),
                 new FreeItemCommand(configuration.channelId),
                 new KitCommand(configuration.channelId),
                 new DeleteAddonCommand(configuration.channelId),
                 new AdminUnRegisterCommand(configuration.adminCommandsChannel),
                 new PaidItemCommand(configuration.channelId),
-                new CustomWingsCommand(configuration.channelId, mongoDatabase.getCollection("wings")),
-                new CustomItemCommand(configuration.channelId, mongoDatabase.getCollection("items")),
-                new CustomCapeCommand(configuration.channelId, mongoDatabase.getCollection("capes")),
+                new CustomWingsCommand(configuration.channelId),
+                new CustomItemCommand(configuration.channelId),
+                new CustomCapeCommand(configuration.channelId),
                 new CapeCommand(configuration.channelId));
-        inGameNamesManager = new InGameNamesManager(mongoDatabase.getCollection("inGameNicks"));
+        inGameNamesManager = new InGameNamesManager();
         api = JDABuilder.create(configuration.discordToken, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES)
                 .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS)
                 .addEventListeners(new DiscordJoinLeaveListener(), new CommandHandler(), new ListenerAdapter() {

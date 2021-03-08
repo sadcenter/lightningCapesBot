@@ -19,11 +19,10 @@ import java.util.concurrent.TimeUnit;
 public final class CustomCapeCommand extends Command {
 
     private final String dir = "downloaded/capes/";
-    private final MongoCollection<Document> collection;
+    private final MongoCollection<Document> collection = Bootstrap.getInstance().getMongoDatabase().getCollection("capes");
 
-    public CustomCapeCommand(long id, MongoCollection<Document> collection) {
+    public CustomCapeCommand(long id) {
         super("customcape", id);
-        this.collection = collection;
     }
 
     @Override

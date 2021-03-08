@@ -14,22 +14,23 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public final class CustomItemCommand extends Command {
 
     private final String dir = "downloaded/items/";
-    private final MongoCollection<Document> collection;
+    private final MongoCollection<Document> collection = Bootstrap.getInstance().getMongoDatabase().getCollection("items");
 
-    public CustomItemCommand(long id, MongoCollection<Document> collection) {
+    public CustomItemCommand(long id) {
         super("customitem", id);
-        this.collection = collection;
     }
 
     @Override
     public void handle(Member user, Message message, TextChannel textChannel, String... args) {
         message.delete().queue();
-        if (args.length == 0 && message.getAttachments().isEmpty()) {
+        List<Message.Attachment> attachments = message.getAttachments();
+        if (args.length == 0 && attachments.isEmpty()) {
             return;
         }
         String name = Bootstrap.getInstance().getInGameNamesManager().getName(user.getIdLong());
@@ -40,7 +41,7 @@ public final class CustomItemCommand extends Command {
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
             return;
         }
-        if (message.getAttachments().isEmpty()) {
+        if (attachments.isEmpty()) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Musisz zalaczyc obraz!",
                     "Zalacz obraz :thinking:",
                     name))
@@ -52,7 +53,7 @@ public final class CustomItemCommand extends Command {
         //String pathName = dir + split[split.length - 1];
         try {
             //FileUtils.copyURLToFile(new URL(raw), new File(pathName));
-            try (InputStream in = message.getAttachments().get(0).retrieveInputStream().get()) {
+            try (InputStream in = attachments.get(0).retrieveInputStream().get()) {
                 if (in.available() > 1_000_000) {
                     textChannel.sendMessage(EmbedUtil.getEmbed("Błąd", "Limit wielkości pliku to 1 MB!", name))
                             .delay(5, TimeUnit.SECONDS)

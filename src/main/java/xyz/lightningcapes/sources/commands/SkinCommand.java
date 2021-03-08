@@ -21,11 +21,10 @@ public final class SkinCommand extends Command {
 
     //INTELKA TY KURWO PRZESTAN MI TU ZLE PODPOWIADAC
     private final String dir = "downloaded/skins/";
-    private final MongoCollection<Document> collection;
+    private final MongoCollection<Document> collection = Bootstrap.getInstance().getMongoDatabase().getCollection("skins");
 
-    public SkinCommand(long id, MongoCollection<Document> collection) {
+    public SkinCommand(long id) {
         super("skin", id);
-        this.collection = collection;
     }
 
     @Override

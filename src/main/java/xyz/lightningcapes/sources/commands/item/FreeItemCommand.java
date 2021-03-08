@@ -25,7 +25,7 @@ public final class FreeItemCommand extends Command {
     public void handle(Member user, Message message, TextChannel textChannel, String... args) {
         message.delete().queue();
 
-        if (args.length == 0) {
+        if (args.length != 1) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Wyslij id, nie pusta komende!",
                     "Musisz nam wyslac id itemu ktory chcesz :thinking:", null))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
