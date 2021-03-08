@@ -1,5 +1,6 @@
 package xyz.lightningcapes.sources;
 
+import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import lombok.Getter;
@@ -40,6 +41,7 @@ public final class LightningBot {
 
     public static char PREFIX = '!';
     private final JDA api;
+    private final MongoClient mongoClient;
     private final MongoDatabase mongoDatabase;
     private final InGameNamesManager inGameNamesManager;
     private final ConfigurationStorage configuration;
@@ -49,7 +51,9 @@ public final class LightningBot {
     @SneakyThrows
     public LightningBot() {
         configuration = new Configuration().getConfigurationStorage();
-        mongoDatabase = MongoClients.create(configuration.mongoString).getDatabase(configuration.mongoDatabase);
+        mongoClient = MongoClients.create(configuration.mongoString);
+        mongoDatabase = mongoClient.getDatabase(configuration.mongoDatabase);
+        Runtime.getRuntime().addShutdownHook(new Thread(mongoClient::close));
         commandManager = new CommandManager(new TakeCommand(configuration.takeID),
                 new FreeWingsCommand(configuration.channelId),
                 new PaidWingsCommand(configuration.channelId),
