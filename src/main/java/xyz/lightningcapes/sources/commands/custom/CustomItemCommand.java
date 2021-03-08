@@ -60,12 +60,12 @@ public final class CustomItemCommand extends Command {
                             .queue();
                     return;
                 }
-                textChannel.sendMessage(EmbedUtil.getEmbed("Sukces", "Nadano twoj wlasny item :exploding_head:", name))
-                        .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
                 String pathName = dir + name + ".png";
                 Files.copy(in, Paths.get(pathName), StandardCopyOption.REPLACE_EXISTING);
                 Document nameDocument = new Document("name", name);
                 collection.replaceOne(nameDocument, nameDocument.append("item", "/" + pathName));
+                textChannel.sendMessage(EmbedUtil.getEmbed("Sukces", "Nadano twoj wlasny item :exploding_head:", name))
+                        .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
             }
         } catch (Exception e) {
             e.printStackTrace();

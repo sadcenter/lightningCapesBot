@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public final class CustomWingsCommand extends Command {
@@ -37,8 +38,8 @@ public final class CustomWingsCommand extends Command {
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
             return;
         }
-
-        if (message.getAttachments().isEmpty()) {
+        List<Message.Attachment> attachments = message.getAttachments();
+        if (attachments.isEmpty()) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Musisz zalaczyc obraz!",
                     "Zalacz obraz :thinking:",
                     name))
@@ -52,7 +53,7 @@ public final class CustomWingsCommand extends Command {
 
         try {
             //FileUtils.copyURLToFile(new URL(raw), new File(pathName));
-            try (InputStream in = message.getAttachments().get(0).retrieveInputStream().get()) {
+            try (InputStream in = attachments.get(0).retrieveInputStream().get()) {
                 if (in.available() > 1_000_000) {
                     textChannel.sendMessage(EmbedUtil.getEmbed("Błąd", "Limit wielkości pliku to 1 MB!", name))
                             .delay(5, TimeUnit.SECONDS)
@@ -61,11 +62,11 @@ public final class CustomWingsCommand extends Command {
                     return;
                 }
                 String pathName = dir + name + ".png";
-                textChannel.sendMessage(EmbedUtil.getEmbed("Sukces", "Nadano twoje wlasne skrzydla :exploding_head:", name))
-                        .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
                 Files.copy(in, Paths.get(pathName), StandardCopyOption.REPLACE_EXISTING);
                 Document nameDocument = new Document("name", name);
                 collection.replaceOne(nameDocument, nameDocument.append("wings", "/" + pathName));
+                textChannel.sendMessage(EmbedUtil.getEmbed("Sukces", "Nadano twoje wlasne skrzydla :exploding_head:", name))
+                        .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
             }
         } catch (Exception e) {
             e.printStackTrace();

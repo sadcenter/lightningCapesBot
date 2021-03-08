@@ -65,20 +65,20 @@ public final class CustomCapeCommand extends Command {
             //FileUtils.copyURLToFile(new URL(raw), new File(pathName));
             try (InputStream in = message.getAttachments().get(0).retrieveInputStream().get()) {
                 if (in.available() > 100_000) {
-                    textChannel.sendMessage(EmbedUtil.getEmbed("Błąd", "Limit wielkości pliku to 1 MB!", name))
+                    textChannel.sendMessage(EmbedUtil.getEmbed("Błąd", "Limit wielkości pliku to 100 KB!", name))
                             .delay(5, TimeUnit.SECONDS)
                             .flatMap(Message::delete)
                             .queue();
                     message.delete().queue();
                     return;
                 }
-                textChannel.sendMessage(EmbedUtil.getEmbed("Sukces", "Nadano twoja wlasna pelerynke :exploding_head:", name))
-                        .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
                 String path = dir + name + ".png";
                 Files.copy(in, Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
                 message.delete().queue();
                 Document nameDocument = new Document("name", name);
                 collection.replaceOne(nameDocument, nameDocument.append("cape", "/" + path));
+                textChannel.sendMessage(EmbedUtil.getEmbed("Sukces", "Nadano twoja wlasna pelerynke :exploding_head:", name))
+                        .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
             }
         } catch (Exception e) {
             e.printStackTrace();
