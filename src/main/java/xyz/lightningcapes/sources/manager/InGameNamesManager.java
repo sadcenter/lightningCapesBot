@@ -30,7 +30,7 @@ public class InGameNamesManager {
             });
 
     public String getName(long id) {
-        return this.inGameCache.get(id);
+        return inGameCache.get(id);
     }
 
     public boolean exists(String name) {
@@ -38,7 +38,7 @@ public class InGameNamesManager {
     }
 
     public void register(long id, String nick) {
-        this.collection.insertOne(new Document("id", id).append("name", nick));
-        this.inGameCache.asMap().put(id, nick);
+        collection.insertOne(new Document("id", id).append("name", nick));
+        inGameCache.asMap().put(id, nick);
     }
 }
