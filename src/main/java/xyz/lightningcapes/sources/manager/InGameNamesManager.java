@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 @Getter
 public class InGameNamesManager {
 
-    private final MongoCollection<Document> collection = Bootstrap.getInstance().getMongoDatabase().getCollection("inGameNicks");
+    private final MongoCollection<Document> collection;
     private final LoadingCache<Long, String> inGameCache = Caffeine.newBuilder()
             .expireAfterWrite(3, TimeUnit.MINUTES)
             .build(new CacheLoader<>() {

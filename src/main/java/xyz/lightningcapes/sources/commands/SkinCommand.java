@@ -1,6 +1,5 @@
 package xyz.lightningcapes.sources.commands;
 
-import com.mongodb.client.MongoCollection;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -21,7 +20,6 @@ public final class SkinCommand extends Command {
 
     //INTELKA TY KURWO PRZESTAN MI TU ZLE PODPOWIADAC
     private final String dir = "downloaded/skins/";
-    private final MongoCollection<Document> collection = Bootstrap.getInstance().getMongoDatabase().getCollection("skins");
 
     public SkinCommand(long id) {
         super("skin", id);
@@ -68,8 +66,7 @@ public final class SkinCommand extends Command {
                         .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
                 String path = dir + name + ".png";
                 Files.copy(in, Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
-                Document nameDocument = new Document("name", name);
-                collection.replaceOne(nameDocument, nameDocument.append("skin", "/" + path));
+                Bootstrap.getInstance().getMongoDatabase().getCollection("skins").replaceOne(new Document("name", name), new Document("name", name).append("skin", "/" + path));
             }
         } catch (Exception e) {
             e.printStackTrace();

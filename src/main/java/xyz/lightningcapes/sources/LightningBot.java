@@ -69,7 +69,7 @@ public final class LightningBot {
                 new CustomItemCommand(configuration.channelId),
                 new CustomCapeCommand(configuration.channelId),
                 new CapeCommand(configuration.channelId));
-        inGameNamesManager = new InGameNamesManager();
+        inGameNamesManager = new InGameNamesManager(mongoDatabase.getCollection("inGameNicks"));
         api = JDABuilder.create(configuration.discordToken, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES)
                 .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS)
                 .addEventListeners(new DiscordJoinLeaveListener(), new CommandHandler(), new ListenerAdapter() {

@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 public final class CustomCapeCommand extends Command {
 
     private final String dir = "downloaded/capes/";
-    private final MongoCollection<Document> collection = Bootstrap.getInstance().getMongoDatabase().getCollection("capes");
 
     public CustomCapeCommand(long id) {
         super("customcape", id);
@@ -64,20 +63,19 @@ public final class CustomCapeCommand extends Command {
             //FileUtils.copyURLToFile(new URL(raw), new File(pathName));
             try (InputStream in = message.getAttachments().get(0).retrieveInputStream().get()) {
                 if (in.available() > 100_000) {
-                    textChannel.sendMessage(EmbedUtil.getEmbed("Błąd", "Limit wielkości pliku to 100 KB!", name))
+                    textChannel.sendMessage(EmbedUtil.getEmbed("Błąd", "Limit wielkości pliku to 1 MB!", name))
                             .delay(5, TimeUnit.SECONDS)
                             .flatMap(Message::delete)
                             .queue();
                     message.delete().queue();
                     return;
                 }
+                textChannel.sendMessage(EmbedUtil.getEmbed("Sukces", "Nadano twoja wlasna pelerynke :exploding_head:", name))
+                        .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
                 String path = dir + name + ".png";
                 Files.copy(in, Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
                 message.delete().queue();
-                Document nameDocument = new Document("name", name);
-                collection.replaceOne(nameDocument, nameDocument.append("cape", "/" + path));
-                textChannel.sendMessage(EmbedUtil.getEmbed("Sukces", "Nadano twoja wlasna pelerynke :exploding_head:", name))
-                        .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
+                Bootstrap.getInstance().getMongoDatabase().getCollection("capes").replaceOne(new Document("name", name), new Document("name", name).append("cape", "/" + path));
             }
         } catch (Exception e) {
             e.printStackTrace();

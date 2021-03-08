@@ -57,9 +57,8 @@ public final class PaidWingsCommand extends Command {
             return;
         }
 
-        Document nameDocument = new Document("name", name);
         Bootstrap.getInstance().getMongoDatabase().getCollection("wings")
-                .replaceOne(nameDocument, nameDocument.append("wings", stringPath + found.getName()));
+                .replaceOne(new Document("name", name), new Document("name", name).append("wings", stringPath + found.getName()));
         textChannel.sendMessage(EmbedUtil.getEmbed("Skrzydla zostaly nadane :clap:",
                 "Aby zobaczyc skrzydla zrestartuj minecrafta!",
                 name))
