@@ -28,7 +28,8 @@ public class AdminUnRegisterCommand extends Command {
         String admin = Bootstrap.getInstance().getInGameNamesManager().getName(user.getIdLong());
 
         Member mentioned = mentionedMembers.get(0);
-        String name = Bootstrap.getInstance().getInGameNamesManager().getName(mentioned.getIdLong());
+        long mentionedId = mentioned.getIdLong();
+        String name = Bootstrap.getInstance().getInGameNamesManager().getName(mentionedId);
 
         if (name == null) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Nie znaleziono takiego uzytkownika!",
@@ -39,14 +40,14 @@ public class AdminUnRegisterCommand extends Command {
 
         MongoDatabase mongoDatabase = Bootstrap.getInstance().getMongoDatabase();
         Document nameDocument = new Document("name", name);
-        mongoDatabase.getCollection("inGameNicks").deleteOne(new Document("id", mentioned.getIdLong()));
+        mongoDatabase.getCollection("inGameNicks").deleteOne(new Document("id", mentionedId));
         mongoDatabase.getCollection("wings").deleteOne(nameDocument);
         mongoDatabase.getCollection("capes").deleteOne(nameDocument);
         mongoDatabase.getCollection("hats").deleteOne(nameDocument);
         mongoDatabase.getCollection("items").deleteOne(nameDocument);
-        Bootstrap.getInstance().getInGameNamesManager().getInGameCache().refresh(mentioned.getIdLong());
+        Bootstrap.getInstance().getInGameNamesManager().getInGameCache().refresh(mentionedId);
 
-        mentioned.getGuild().removeRoleFromMember(mentioned.getIdLong(), Bootstrap.getInstance().getRoleCache().getRegisteredRole()).queue();
+        mentioned.getGuild().removeRoleFromMember(mentionedId, Bootstrap.getInstance().getRoleCache().getRegisteredRole()).queue();
         textChannel.sendMessage(EmbedUtil.getEmbed("Odrejestrowano typka!", "Typek odrejestrowany :thinking:", admin))
                 .queue();
     }

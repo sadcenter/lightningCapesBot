@@ -8,9 +8,7 @@ public final class RegisterUtil {
         if (StringUtils.isEmpty(cs)) {
             return false;
         } else {
-            int sz = cs.length();
-
-            for (int i = 0; i < sz; ++i) {
+            for (int i = 0; i < cs.length(); ++i) {
                 char ch = cs.charAt(i);
                 if (ch == '_')
                     continue;

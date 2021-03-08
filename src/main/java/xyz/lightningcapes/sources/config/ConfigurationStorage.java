@@ -1,7 +1,8 @@
 package xyz.lightningcapes.sources.config;
 
+import com.google.common.collect.Sets;
+
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 public final class ConfigurationStorage implements Serializable {
@@ -24,5 +25,5 @@ public final class ConfigurationStorage implements Serializable {
 
     public long adminCommandsChannel = 0L;
 
-    public Set<Long> notWriteChannels = new HashSet<>();
+    public Set<Long> notWriteChannels = Sets.newHashSet(1L);
 }

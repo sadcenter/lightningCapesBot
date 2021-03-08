@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import org.bson.Document;
 import xyz.lightningcapes.Bootstrap;
 import xyz.lightningcapes.api.Command;
+import xyz.lightningcapes.sources.LightningBot;
 import xyz.lightningcapes.sources.utils.EmbedUtil;
 
 import java.util.concurrent.TimeUnit;
@@ -50,7 +51,7 @@ public final class DeleteAddonCommand extends Command {
             textChannel.sendMessage(EmbedUtil.getEmbed("Usunieto twoja czapke!", "Twoja czapka zostala usunieta!", name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
         } else {
-            textChannel.sendMessage(EmbedUtil.getEmbed("Poprawne uzycie: " + Bootstrap.getInstance().getPREFIX() + "usun cape/wings/item/skin/hat!", ":thinking:", name))
+            textChannel.sendMessage(EmbedUtil.getEmbed("Poprawne uzycie: " + LightningBot.PREFIX + "usun cape/wings/item/skin/hat!", ":thinking:", name))
                     .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
         }
 
