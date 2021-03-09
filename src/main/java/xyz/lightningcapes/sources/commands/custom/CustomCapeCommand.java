@@ -1,5 +1,6 @@
 package xyz.lightningcapes.sources.commands.custom;
 
+import com.google.common.collect.ImmutableMap;
 import com.mongodb.client.MongoCollection;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -28,9 +29,12 @@ public final class CustomCapeCommand extends Command {
     public void handle(Member user, Message message, TextChannel textChannel, String... args) {
         message.delete().queue();
         if (args.length == 0 && message.getAttachments().isEmpty()) {
-            textChannel.sendMessage(EmbedUtil.getEmbed("Wyslij argument, nie pusta komende!",
-                    "Musisz wyslac nam item ktory chcesz :thinking:", null))
-                    .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
+            textChannel.sendMessage(EmbedUtil.getEmbed(user, "Wystąpił błąd", null, ImmutableMap.<String, String>builder()
+                    .put("Opis błędu", "Złe użycie komendy.")
+                    .build()))
+                    .delay(5, TimeUnit.SECONDS)
+                    .flatMap(Message::delete)
+                    .queue();
             message.delete().queue();
             return;
         }
@@ -38,10 +42,12 @@ public final class CustomCapeCommand extends Command {
         String name = Bootstrap.getInstance().getInGameNamesManager().getName(user.getIdLong());
 
         if (!RoleUtil.hasRole(user, Bootstrap.getInstance().getConfiguration().premiumId)) {
-            textChannel.sendMessage(EmbedUtil.getEmbed("Hola hola :rage:",
-                    "Nie posiadasz do tego dostepu :thinking:",
-                    name))
-                    .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
+            textChannel.sendMessage(EmbedUtil.getEmbed(user, "Wystąpił błąd", null, ImmutableMap.<String, String>builder()
+                    .put("Opis błędu", "Nie posiadasz do tego dostępu.")
+                    .build()))
+                    .delay(5, TimeUnit.SECONDS)
+                    .flatMap(Message::delete)
+                    .queue();
             message.delete().queue();
             return;
         }
@@ -51,10 +57,12 @@ public final class CustomCapeCommand extends Command {
         //String pathName = dir + split[split.length - 1];
 
         if (message.getAttachments().isEmpty()) {
-            textChannel.sendMessage(EmbedUtil.getEmbed("Musisz zalaczyc obraz!",
-                    "Zalacz obraz :thinking:",
-                    name))
-                    .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
+            textChannel.sendMessage(EmbedUtil.getEmbed(user, "Wystąpił błąd", null, ImmutableMap.<String, String>builder()
+                    .put("Opis błędu", "Musisz załączyć obraz do wiadomości.")
+                    .build()))
+                    .delay(5, TimeUnit.SECONDS)
+                    .flatMap(Message::delete)
+                    .queue();
             message.delete().queue();
             return;
         }

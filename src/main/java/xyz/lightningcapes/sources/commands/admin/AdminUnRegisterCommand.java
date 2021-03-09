@@ -1,5 +1,6 @@
 package xyz.lightningcapes.sources.commands.admin;
 
+import com.google.common.collect.ImmutableMap;
 import com.mongodb.client.MongoDatabase;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -10,6 +11,7 @@ import xyz.lightningcapes.api.Command;
 import xyz.lightningcapes.sources.utils.EmbedUtil;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class AdminUnRegisterCommand extends Command {
 
@@ -30,8 +32,11 @@ public class AdminUnRegisterCommand extends Command {
         String name = Bootstrap.getInstance().getInGameNamesManager().getName(mentionedId);
 
         if (name == null) {
-            textChannel.sendMessage(EmbedUtil.getEmbed("Nie znaleziono takiego uzytkownika!",
-                    "Ten ziomek nie jest zarejestrowany :thinking:", admin))
+            textChannel.sendMessage(EmbedUtil.getEmbed(user, "Wystąpił błąd", null, ImmutableMap.<String, String>builder()
+                    .put("Opis błędu", "Ten użytkownik nie jest zarejestrowany.")
+                    .build()))
+                    .delay(5, TimeUnit.SECONDS)
+                    .flatMap(Message::delete)
                     .queue();
             return;
         }
@@ -46,7 +51,11 @@ public class AdminUnRegisterCommand extends Command {
         Bootstrap.getInstance().getInGameNamesManager().getInGameCache().refresh(mentionedId);
 
         user.getGuild().removeRoleFromMember(mentionedId, Bootstrap.getInstance().getRoleCache().getRegisteredRole()).queue();
-        textChannel.sendMessage(EmbedUtil.getEmbed("Odrejestrowano typka!", "Typek odrejestrowany :thinking:", admin))
+        textChannel.sendMessage(EmbedUtil.getEmbed(user, "Użytkownik został odrejestrowany.", name, ImmutableMap.<String, String>builder()
+                .put("Nick", name)
+                .build()))
+                .delay(5, TimeUnit.SECONDS)
+                .flatMap(Message::delete)
                 .queue();
     }
 }

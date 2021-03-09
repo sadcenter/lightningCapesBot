@@ -1,5 +1,6 @@
 package xyz.lightningcapes.sources.commands.cape;
 
+import com.google.common.collect.ImmutableMap;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -24,23 +25,32 @@ public final class CapeCommand extends Command {
     public void handle(Member user, Message message, TextChannel textChannel, String... args) {
         message.delete().queue();
         if (args.length != 1) {
-            textChannel.sendMessage(EmbedUtil.getEmbed("Błąd",
-                    "Musisz wysłać ID pelerynki!", null))
-                    .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
+            textChannel.sendMessage(EmbedUtil.getEmbed(user, "Wystąpił błąd", null, ImmutableMap.<String, String>builder()
+                    .put("Opis błędu", "Musisz wysłać ID peleryny.")
+                    .build()))
+                    .delay(5, TimeUnit.SECONDS)
+                    .flatMap(Message::delete)
+                    .queue();
             return;
         }
         String name = Bootstrap.getInstance().getInGameNamesManager().getName(user.getIdLong());
-        File found = ReaderUtils.found(tierDirs, args[0] + ".png");
+        String capeId = args[0];
+        File found = ReaderUtils.found(tierDirs, capeId + ".png");
         if (found == null) {
-            textChannel.sendMessage(EmbedUtil.getEmbed("Taka pelerynka nie istnieje!",
-                    "Takie id nie istnieje :thinking:", name))
-                    .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
+            textChannel.sendMessage(EmbedUtil.getEmbed(user, "Wystąpił błąd", null, ImmutableMap.<String, String>builder()
+                    .put("Opis błędu", "Taka pelerynka nie istnieje.")
+                    .build()))
+                    .delay(5, TimeUnit.SECONDS)
+                    .flatMap(Message::delete)
+                    .queue();
             return;
         }
         Bootstrap.getInstance().getMongoDatabase().getCollection("capes")
                 .replaceOne(new Document("name", name), new Document("name", name).append("cape", "/allcapes/" + found.getName()));
-        textChannel.sendMessage(EmbedUtil.getEmbed("Nadano pelerynke!",
-                "Aby zobaczyć nową pelerynkę zrestartuj mc :exploding_head:", name))
+        textChannel.sendMessage(EmbedUtil.getEmbed(user, "Peleryna została nadana.", null, ImmutableMap.<String, String>builder()
+                .put("Nick", name)
+                .put("ID", capeId)
+                .build()))
                 .delay(5, TimeUnit.SECONDS)
                 .flatMap(Message::delete)
                 .queue();
