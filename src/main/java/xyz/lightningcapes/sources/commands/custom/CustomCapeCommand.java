@@ -1,7 +1,6 @@
 package xyz.lightningcapes.sources.commands.custom;
 
 import com.google.common.collect.ImmutableMap;
-import com.mongodb.client.MongoCollection;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -71,7 +70,9 @@ public final class CustomCapeCommand extends Command {
             //FileUtils.copyURLToFile(new URL(raw), new File(pathName));
             try (InputStream in = message.getAttachments().get(0).retrieveInputStream().get()) {
                 if (in.available() > 100_000) {
-                    textChannel.sendMessage(EmbedUtil.getEmbed("Błąd", "Limit wielkości pliku to 1 MB!", name))
+                    textChannel.sendMessage(EmbedUtil.getEmbed(user, "Wystąpił błąd", null, ImmutableMap.<String, String>builder()
+                            .put("Opis błędu", "Limit wielkości pliku to 1 MB")
+                            .build()))
                             .delay(5, TimeUnit.SECONDS)
                             .flatMap(Message::delete)
                             .queue();
