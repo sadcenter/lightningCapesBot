@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bson.Document;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import xyz.lightningcapes.Bootstrap;
 
 import java.util.concurrent.TimeUnit;
 

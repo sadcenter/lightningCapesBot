@@ -16,7 +16,7 @@ public class EmbedUtil {
         EmbedBuilder embedBuilder = new EmbedBuilder()
                 .setTitle(title)
                 .setColor(Color.YELLOW)
-                .setFooter("LightningCapes | Użyte przez "+user.getName()+"#"+user.getDiscriminator());
+                .setFooter("LightningCapes | Użyte przez " + user.getName() + "#" + user.getDiscriminator());
         for (Map.Entry<String, String> field : fields.entrySet()) {
             embedBuilder.addField(field.getKey(), field.getValue(), true);
         }

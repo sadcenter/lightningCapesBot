@@ -21,18 +21,18 @@ public final class DiscordJoinLeaveListener extends ListenerAdapter {
                 .deleteOne(new Document("id", id));
 
         mongoDatabase.getCollection("wings")
-                .deleteOne( new Document("name", name));
+                .deleteOne(new Document("name", name));
 
         mongoDatabase.getCollection("capes")
-                .deleteOne( new Document("name", name));
+                .deleteOne(new Document("name", name));
 
         mongoDatabase.getCollection("items")
-                .deleteOne( new Document("name", name));
+                .deleteOne(new Document("name", name));
 
         mongoDatabase.getCollection("hats")
-                .deleteOne( new Document("name", name));
+                .deleteOne(new Document("name", name));
 
         mongoDatabase.getCollection("skins")
-                .deleteOne( new Document("name", name));
+                .deleteOne(new Document("name", name));
     }
 }
