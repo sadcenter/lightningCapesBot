@@ -1,6 +1,5 @@
 package xyz.lightningcapes.sources.commands.custom;
 
-import com.mongodb.client.MongoCollection;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -14,6 +13,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public final class CustomWingsCommand extends Command {
@@ -26,6 +26,7 @@ public final class CustomWingsCommand extends Command {
 
     @Override
     public void handle(Member user, Message message, TextChannel textChannel, String... args) {
+        List<Message.Attachment> attachments = message.getAttachments();
         message.delete().queue();
         String name = Bootstrap.getInstance().getInGameNamesManager().getName(user.getIdLong());
         if (!RoleUtil.hasRole(user, Bootstrap.getInstance().getConfiguration().premiumId)) {
@@ -36,7 +37,7 @@ public final class CustomWingsCommand extends Command {
             return;
         }
 
-        if (message.getAttachments().isEmpty()) {
+        if (attachments.isEmpty()) {
             textChannel.sendMessage(EmbedUtil.getEmbed("Musisz zalaczyc obraz!",
                     "Zalacz obraz :thinking:",
                     name))
@@ -50,7 +51,7 @@ public final class CustomWingsCommand extends Command {
 
         try {
             //FileUtils.copyURLToFile(new URL(raw), new File(pathName));
-            try (InputStream in = message.getAttachments().get(0).retrieveInputStream().get()) {
+            try (InputStream in = attachments.get(0).retrieveInputStream().get()) {
                 if (in.available() > 1_000_000) {
                     textChannel.sendMessage(EmbedUtil.getEmbed("Błąd", "Limit wielkości pliku to 1 MB!", name))
                             .delay(5, TimeUnit.SECONDS)

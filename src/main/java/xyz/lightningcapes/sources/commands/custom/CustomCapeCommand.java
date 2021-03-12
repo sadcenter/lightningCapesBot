@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public final class CustomCapeCommand extends Command {
@@ -26,15 +27,15 @@ public final class CustomCapeCommand extends Command {
 
     @Override
     public void handle(Member user, Message message, TextChannel textChannel, String... args) {
+        List<Message.Attachment> attachments = message.getAttachments();
         message.delete().queue();
-        if (args.length == 0 && message.getAttachments().isEmpty()) {
+        if (args.length == 0 && attachments.isEmpty()) {
             textChannel.sendMessage(EmbedUtil.getEmbed(user, "Wystąpił błąd", null, ImmutableMap.<String, String>builder()
                     .put("Opis błędu", "Złe użycie komendy.")
                     .build()))
                     .delay(5, TimeUnit.SECONDS)
                     .flatMap(Message::delete)
                     .queue();
-            message.delete().queue();
             return;
         }
 
@@ -47,7 +48,6 @@ public final class CustomCapeCommand extends Command {
                     .delay(5, TimeUnit.SECONDS)
                     .flatMap(Message::delete)
                     .queue();
-            message.delete().queue();
             return;
         }
 
@@ -55,20 +55,19 @@ public final class CustomCapeCommand extends Command {
         //String[] split = raw.split("/");
         //String pathName = dir + split[split.length - 1];
 
-        if (message.getAttachments().isEmpty()) {
+        if (attachments.isEmpty()) {
             textChannel.sendMessage(EmbedUtil.getEmbed(user, "Wystąpił błąd", null, ImmutableMap.<String, String>builder()
                     .put("Opis błędu", "Musisz załączyć obraz do wiadomości.")
                     .build()))
                     .delay(5, TimeUnit.SECONDS)
                     .flatMap(Message::delete)
                     .queue();
-            message.delete().queue();
             return;
         }
 
         try {
             //FileUtils.copyURLToFile(new URL(raw), new File(pathName));
-            try (InputStream in = message.getAttachments().get(0).retrieveInputStream().get()) {
+            try (InputStream in = attachments.get(0).retrieveInputStream().get()) {
                 if (in.available() > 100_000) {
                     textChannel.sendMessage(EmbedUtil.getEmbed(user, "Wystąpił błąd", null, ImmutableMap.<String, String>builder()
                             .put("Opis błędu", "Limit wielkości pliku to 1 MB")
@@ -76,14 +75,12 @@ public final class CustomCapeCommand extends Command {
                             .delay(5, TimeUnit.SECONDS)
                             .flatMap(Message::delete)
                             .queue();
-                    message.delete().queue();
                     return;
                 }
                 textChannel.sendMessage(EmbedUtil.getEmbed("Sukces", "Nadano twoja wlasna pelerynke :exploding_head:", name))
                         .delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
                 String path = dir + name + ".png";
                 Files.copy(in, Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
-                message.delete().queue();
                 Bootstrap.getInstance().getMongoDatabase().getCollection("capes").replaceOne(new Document("name", name), new Document("name", name).append("cape", "/" + path));
             }
         } catch (Exception e) {
