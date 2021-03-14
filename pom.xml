@@ -77,7 +77,7 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.4</version>
                 <configuration>
-                    <createDependencyReducedPom>${project.build.directory}/dependency-reduced-pom.xml</createDependencyReducedPom>
+                    <dependencyReducedPomLocation>${project.build.directory}/dependencyReducedPomLocation-pom.xml</dependencyReducedPomLocation>
                 </configuration>
                 <executions>
                     <execution>
